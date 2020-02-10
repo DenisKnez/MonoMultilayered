@@ -23,7 +23,7 @@ namespace Project.Service
         }
 
 
-        public async Task<PageList<IVehicleMake>> GetPaginatedFilteredListAsync(IPageSettings pageSettings)
+        public async Task<IPage<IVehicleMake>> GetPaginatedFilteredListAsync(IPageSettings pageSettings)
         {
             IQueryable<IVehicleMake> tableQuery = UnitOfWork.VehicleMakeRepository.TableAsNoTracking;
 
@@ -36,12 +36,6 @@ namespace Project.Service
             int count = await tableQuery.CountAsync();
 
             int totalPages = (int)Math.Ceiling(count / (double)5);
-
-            // ovo je trebalo zbog MVC, tako da ovo mozda nije potrebno
-            //if (totalPages > 0)
-            //{
-            //    totalPages--;
-            //}
 
 
             tableQuery = tableQuery.Skip(pageSettings.PageSize * pageSettings.PageIndex).Take(pageSettings.PageSize);
@@ -62,7 +56,7 @@ namespace Project.Service
 
 
 
-            return new PageList<IVehicleMake>() { Items = await tableQuery.ToListAsync(), TotalPages = totalPages, PageIndex = pageSettings.PageIndex };
+            return new Page<IVehicleMake>() { Items = await tableQuery.ToListAsync(), TotalPages = totalPages, PageIndex = pageSettings.PageIndex };
 
         }
 

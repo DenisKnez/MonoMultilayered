@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Project.Common;
 using Project.DAL.DomainModels;
 using Project.DAL.IDomainModels;
 using Project.Model;
@@ -26,7 +27,7 @@ namespace Project.WebAPI.AutoMapperProfiles
             //CreateMap<VehicleMake, EditMakeModel>();
 
             //// page
-            //CreateMap<VehicleMakeModel, VehicleMake>();
+            CreateMap<IPage<IVehicleMake>, IVehicleMakePage_Model>();
         }
 
     }

@@ -29,30 +29,30 @@ namespace Project.WebAPI.Controllers
             Mapper = mapper;
         }
 
-
+        // POST api/vehiclemake/paginated
         [HttpPost("paginated")]
         public async Task<ActionResult> GetPaginatedVehicleMakesAsync([FromBody]PageSettings pageSettings)
         {
-            PageList<IVehicleMake> vehicles = await VehicleMakeService.GetPaginatedFilteredListAsync(pageSettings);
+            IPage<IVehicleMake> vehicles =  await VehicleMakeService.GetPaginatedFilteredListAsync(pageSettings);
 
 
-            IVehicleMakeModel_Model m = Mapper.Map<VehicleMakeModel_Model>((VehicleMake)vehicles.Items[0]);
+            IVehicleMakeModel_Model m = Mapper.Map<IVehicleMakeModel_Model>(vehicles);
 
             string something = m.Name;
 
             // automapper
-            List<IVehicleMakeModel_Model> pageModel = new List<IVehicleMakeModel_Model>();
+            //List<IVehicleMakeModel_Model> pageModel = new List<IVehicleMakeModel_Model>();
 
-            VehicleMakePage_Model model = new VehicleMakePage_Model();
-
-
-            foreach (var item in vehicles.Items)
-            {
-                model.VehicleMakeModel_Models.Add(Mapper.Map<VehicleMakeModel_Model>((VehicleMake)model));
-            }
+            //VehicleMakePage_Model model = new VehicleMakePage_Model();
 
 
-            return Ok(pageModel);
+            //foreach (var item in vehicles.Items)
+            //{
+            //    model.VehicleMakeModel_Models.Add(Mapper.Map<VehicleMakeModel_Model>((VehicleMake)model));
+            //}
+
+
+            return Ok(m);
         }
 
 

@@ -12,7 +12,7 @@ namespace Project.Service.Common
     {
         Task<IVehicleMake> GetVehicleMakeByIdAsync(Guid id);
 
-        Task<PageList<IVehicleMake>> GetPaginatedFilteredListAsync(IPageSettings pageSettings);
+        Task<IPage<IVehicleMake>> GetPaginatedFilteredListAsync(IPageSettings pageSettings);
 
         Task<bool> CreateVehicleMakeAsync(IVehicleMake vehicleMake);
 

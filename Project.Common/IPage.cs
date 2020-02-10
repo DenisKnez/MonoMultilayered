@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Project.Common
 {
-    public interface IPageList<T>
+    public interface IPage<T>
     {
         List<T> Items { get; set; }
 
