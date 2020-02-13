@@ -61,8 +61,6 @@ namespace Project.Service.Tests
 
             var unit = new Mock<IUnitOfWork>();
 
-            //unit.
-            //unit.Setup(x => x.VehicleMakeRepository.AddAsync(vehicle))
             unit.Setup(x => x.UpdateAsync(vehicle)).Returns(Task.FromResult(1));
             unit.Setup(x => x.CommitAsync()).Returns(Task.FromResult(numberofSuccessfulCommits));
 
@@ -93,13 +91,10 @@ namespace Project.Service.Tests
 
             var unit = new Mock<IUnitOfWork>();
 
-            //unit.
-            //unit.Setup(x => x.VehicleMakeRepository.AddAsync(vehicle))
             unit.Setup(x => x.DeleteAsync<VehicleMake>(vehicle.Id)).Returns(Task.FromResult(1));
             unit.Setup(x => x.CommitAsync()).Returns(Task.FromResult(numberofSuccessfulCommits));
 
             //act
-
 
             VehicleMakeService service = new VehicleMakeService(unit.Object);
 

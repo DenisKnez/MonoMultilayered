@@ -15,9 +15,10 @@ namespace Project.Repository
         public VehicleContext DbContext { get; private set; }
 
         public IVehicleMakeRepository VehicleMakeRepository { get; set; }
+        public IVehicleModelRepository VehicleModelRepository { get; set; }
 
-
-        public UnitOfWork(VehicleContext dbContext, IVehicleMakeRepository vehicleMakeRepository)
+        public UnitOfWork(VehicleContext dbContext, 
+            IVehicleMakeRepository vehicleMakeRepository, IVehicleModelRepository vehicleModelRepository)
         {
             if (dbContext == null)
             {
@@ -27,6 +28,7 @@ namespace Project.Repository
 
 
             VehicleMakeRepository = vehicleMakeRepository;
+            VehicleModelRepository = vehicleModelRepository;
         }
 
         public virtual Task<int> AddAsync<T>(T entity) where T : class

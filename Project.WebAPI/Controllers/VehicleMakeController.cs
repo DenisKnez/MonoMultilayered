@@ -13,6 +13,7 @@ using Project.Model.Common;
 using Microsoft.AspNetCore.Cors;
 using Project.Common;
 using AutoMapper;
+using Project.Common.Interfaces;
 
 namespace Project.WebAPI.Controllers
 {
@@ -59,20 +60,14 @@ namespace Project.WebAPI.Controllers
 
             var vehicle = await VehicleMakeService.GetVehicleMakeByIdAsync(id);
 
+
             if (vehicle == null)
             {
                 return BadRequest();
             }
             else
             {
-                var vehicleModel = new VehicleMakeModel_Model()
-                {
-                    Id = vehicle.Id,
-                    Name = vehicle.Name,
-                    Abrv = vehicle.Abrv
-
-                };
-
+                var vehicleModel = Mapper.Map<VehicleMakeModel_Model>(vehicle);
 
                 return Ok(vehicleModel);
             }
@@ -99,13 +94,9 @@ namespace Project.WebAPI.Controllers
             var isCreated = await VehicleMakeService.CreateVehicleMakeAsync(vehicle);
 
             if (isCreated == true)
-            {
                 return Ok();
-            }
             else
-            {
                 return StatusCode(StatusCodes.Status500InternalServerError);
-            }
 
 
         }
@@ -131,13 +122,9 @@ namespace Project.WebAPI.Controllers
 
 
             if (isUpdated == true)
-            {
                 return Ok();
-            }
             else
-            {
                 return StatusCode(StatusCodes.Status500InternalServerError);
-            }
 
 
         }
@@ -150,13 +137,9 @@ namespace Project.WebAPI.Controllers
 
 
             if (isDeleted == true)
-            {
                 return Ok();
-            }
             else
-            {
                 return BadRequest();
-            }
 
         }
 

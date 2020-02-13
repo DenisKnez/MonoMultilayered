@@ -13,5 +13,9 @@ namespace Project.Model
 
         int PageIndex { get; set; }
 
+        string SearchString { get; set; }
+
+        string SortOrder { get; set; }
+
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project.Common
+namespace Project.Common.Interfaces
 {
     public interface IPageSettings
     {

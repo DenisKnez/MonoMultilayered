@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project.Common.Interfaces;
+using System;
 
 namespace Project.Common
 {

@@ -15,18 +15,10 @@ namespace Project.WebAPI.AutoMapperProfiles
     {
         public VehicleMakeProfile()
         {
-            // create
-            CreateMap<VehicleMake, VehicleMakeModel_Model>();
+            // get
+            CreateMap<IVehicleMake, VehicleMakeModel_Model>();
 
-
-
-            //CreateMap<CreateMakeModel, VehicleMake>();
-
-            //// edit
-            //CreateMap<EditMakeModel, VehicleMake>();
-            //CreateMap<VehicleMake, EditMakeModel>();
-
-            //// page
+            // page
             CreateMap<List<IVehicleMake>, List<VehicleMakePage_Model>>();
         }
 

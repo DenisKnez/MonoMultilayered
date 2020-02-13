@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Project.Common.Interfaces;
 
 namespace Project.Service
 {
@@ -33,14 +34,6 @@ namespace Project.Service
             }
 
 
-            int count = await tableQuery.CountAsync();
-
-            int totalPages = (int)Math.Ceiling(count / (double)5);
-
-
-            tableQuery = tableQuery.Skip(pageSettings.PageSize * pageSettings.PageIndex).Take(pageSettings.PageSize);
-
-
             switch (pageSettings.SortOrder)
             {
                 case "name":
@@ -55,17 +48,17 @@ namespace Project.Service
             }
 
 
+            int count = await tableQuery.CountAsync();
+
+            int totalPages = (int)Math.Ceiling(count / (double)5);
+
             if (totalPages > 0)
                 totalPages--;
 
+            tableQuery = tableQuery.Skip(pageSettings.PageSize * pageSettings.PageIndex).Take(pageSettings.PageSize);
+
 
             return new Page<IVehicleMake>() { Items = await tableQuery.ToListAsync(), TotalPages = totalPages, PageIndex = pageSettings.PageIndex };
-
-        }
-
-
-        public async Task SortVehicleMakeListAsync(IList<VehicleMake> vehicles)
-        {
 
         }
 
@@ -113,8 +106,6 @@ namespace Project.Service
             return result == 0 ? false : true;
 
         }
-
-
 
     }
 }

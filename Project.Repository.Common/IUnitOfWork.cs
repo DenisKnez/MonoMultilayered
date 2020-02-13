@@ -10,6 +10,7 @@ namespace Project.Repository.Common
     public interface IUnitOfWork : IDisposable
     {
         IVehicleMakeRepository VehicleMakeRepository { get; set; }
+        IVehicleModelRepository VehicleModelRepository { get; set; }
 
         Task<int> CommitAsync();
 
