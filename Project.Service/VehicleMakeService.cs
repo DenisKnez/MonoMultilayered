@@ -43,10 +43,10 @@ namespace Project.Service
 
             switch (pageSettings.SortOrder)
             {
-                case "Name":
+                case "name":
                     tableQuery = tableQuery.OrderBy(x => x.Name);
                     break;
-                case "Abrv":
+                case "abrv":
                     tableQuery = tableQuery.OrderBy(x => x.Abrv);
                     break;
                 default:
@@ -54,6 +54,9 @@ namespace Project.Service
                     break;
             }
 
+
+            if (totalPages > 0)
+                totalPages--;
 
 
             return new Page<IVehicleMake>() { Items = await tableQuery.ToListAsync(), TotalPages = totalPages, PageIndex = pageSettings.PageIndex };

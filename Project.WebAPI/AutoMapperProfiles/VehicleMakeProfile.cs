@@ -27,7 +27,7 @@ namespace Project.WebAPI.AutoMapperProfiles
             //CreateMap<VehicleMake, EditMakeModel>();
 
             //// page
-            CreateMap<IPage<IVehicleMake>, IVehicleMakePage_Model>();
+            CreateMap<List<IVehicleMake>, List<VehicleMakePage_Model>>();
         }
 
     }

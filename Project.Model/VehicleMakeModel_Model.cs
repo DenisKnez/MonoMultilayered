@@ -13,8 +13,5 @@ namespace Project.Model
 
         public string Abrv { get; set; }
 
-        // treba biti list vehilceModel model
-        //public List<VehicleModel> VehicleModels { get; set; }
-
     }
 }

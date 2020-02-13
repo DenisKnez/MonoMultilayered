@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Project.Model.Common;
 
 namespace Project.Model
 {
     public interface IVehicleMakePage_Model
     {
-        List<VehicleMakeModel_Model> VehicleMakeModel_Models { get; set; }
+        List<IVehicleMakeModel_Model> Items { get; set; }
 
         int TotalPages { get; set; }
 

@@ -35,24 +35,19 @@ namespace Project.WebAPI.Controllers
         {
             IPage<IVehicleMake> vehicles =  await VehicleMakeService.GetPaginatedFilteredListAsync(pageSettings);
 
+            List<VehicleMakeModel_Model> makeModels = Mapper.Map<List<VehicleMakeModel_Model>>(vehicles.Items);
 
-            IVehicleMakeModel_Model m = Mapper.Map<IVehicleMakeModel_Model>(vehicles);
-
-            string something = m.Name;
-
-            // automapper
-            //List<IVehicleMakeModel_Model> pageModel = new List<IVehicleMakeModel_Model>();
-
-            //VehicleMakePage_Model model = new VehicleMakePage_Model();
-
-
-            //foreach (var item in vehicles.Items)
-            //{
-            //    model.VehicleMakeModel_Models.Add(Mapper.Map<VehicleMakeModel_Model>((VehicleMake)model));
-            //}
+            var model = new VehicleMakePage_Model()
+            {
+                Items = makeModels.Cast<IVehicleMakeModel_Model>().ToList(),
+                PageIndex = vehicles.PageIndex,
+                TotalPages = vehicles.TotalPages,
+                SearchString = pageSettings.SearchString,
+                SortOrder = pageSettings.SortOrder
+            };
 
 
-            return Ok(m);
+            return Ok(model);
         }
 
 
@@ -115,8 +110,8 @@ namespace Project.WebAPI.Controllers
 
         }
 
-        // PUT api/vehiclemake/updateVehicle
-        [HttpPut("update")]
+        // PUT api/vehiclemake/update
+        [HttpPost("update")]
         public async Task<IActionResult> UpdateVehicleMakeAsync([FromBody] UpdateVehicleMake_Model updateModel)
         {
 
