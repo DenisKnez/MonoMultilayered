@@ -112,12 +112,6 @@ namespace Project.WebAPI
             // This is where our bindings are configurated
             kernel.Bind<VehicleContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<VehicleContext>().UseSqlServer(Configuration.GetConnectionString("SQLserverConnection")).Options);
 
-            //kernel.Bind<IVehicleMakeService>().To<VehicleMakeService>().InScope(RequestScope);
-            //kernel.Bind<IVehicleModelService>().To<VehicleModelService>().(RequestScope);
-
-            //kernel.Load()
-
-
             //// Cross-wire required framework services
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
 
