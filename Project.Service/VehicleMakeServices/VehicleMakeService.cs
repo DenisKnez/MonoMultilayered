@@ -80,10 +80,19 @@ namespace Project.Service.VehicleMakeServices
             return model;
         }
 
-        public async Task<IVehicleMakeEntity> GetVehicleMakeByIdAsync(Guid id)
+        public async Task<List<IVehicleMake>> GetVehiclesAsync()
+        {
+            var something = await UnitOfWork.VehicleMakeRepository.Table.ToListAsync();
+
+            return Mapper.Map<List<VehicleMake>>(something).Cast<IVehicleMake>().ToList();
+        }
+
+
+
+        public async Task<IVehicleMake> GetVehicleMakeByIdAsync(Guid id)
         {
             
-            return await UnitOfWork.VehicleMakeRepository.GetByIdAsync(id);
+            return Mapper.Map<IVehicleMake>(await UnitOfWork.VehicleMakeRepository.GetByIdAsync(id));
 
         }
 

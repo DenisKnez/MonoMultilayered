@@ -1,4 +1,5 @@
-﻿using Project.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Project.DAL.Context;
 using Project.DAL.DomainModels;
 using Project.DAL.IDomainModels;
 using Project.Repository.Common.Repositories;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Project.Repository.Repositories
 {
@@ -17,6 +19,11 @@ namespace Project.Repository.Repositories
 
         }
 
+
+        public async Task<List<VehicleMakeEntity>> GetVehicles()
+        {
+            return await Entities.ToListAsync();
+        }
         
 
 

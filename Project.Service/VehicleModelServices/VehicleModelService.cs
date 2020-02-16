@@ -65,11 +65,6 @@ namespace Project.Service.VehicleModelServices
             tableQuery = tableQuery.Skip(pageSettings.PageSize * pageSettings.PageIndex).Take(pageSettings.PageSize).Include(x => x.VehicleMakeEntity);
 
 
-            //return new Page<IVehicleMake>() { Items = await tableQuery.ToListAsync(), TotalPages = totalPages, PageIndex = pageSettings.PageIndex };
-
-
-            var something = await tableQuery.ToListAsync();
-
             List<VehicleModel> vehicles = Mapper.Map<List<VehicleModel>>(await tableQuery.ToListAsync());
 
             var model = new Page<IVehicleModel>()
@@ -84,36 +79,31 @@ namespace Project.Service.VehicleModelServices
             return model;
         }
 
-        public async Task<IVehicleModelEntity> GetVehicleModelByIdAsync(Guid id)
+        public async Task<IVehicleModel> GetVehicleModelByIdAsync(Guid id)
         {
-
-            return await UnitOfWork.VehicleModelRepository.GetByIdAsync(id);
-
+            return Mapper.Map<VehicleModel>(await UnitOfWork.VehicleModelRepository.GetByIdAsync(id));
         }
 
         /// <summary>
         /// Creates a vehicle make
         /// </summary>
-        /// <param name="vehicleMake"></param>
+        /// <param name="vehicleModel"></param>
         /// <returns>true if the creation was successful</returns>
-        public async Task<bool> CreateVehicleModelAsync(IVehicleModel vehicleMake)
+        public async Task<bool> CreateVehicleModelAsync(IVehicleModel vehicleModel)
         {
-            //var vehicle = await VehicleMakeRepository.AddAsync();
-
-            var model = Mapper.Map<VehicleMakeEntity>(vehicleMake);
+            var model = Mapper.Map<VehicleMakeEntity>(vehicleModel);
 
             await UnitOfWork.AddAsync(model);
 
             var result = await UnitOfWork.CommitAsync();
 
-
             return result == 0 ? false : true;
         }
 
 
-        public async Task<bool> UpdateVehicleModelAsync(IVehicleModel vehicleMake)
+        public async Task<bool> UpdateVehicleModelAsync(IVehicleModel vehicleModel)
         {
-            var model = Mapper.Map<VehicleMakeEntity>(vehicleMake);
+            var model = Mapper.Map<VehicleMakeEntity>(vehicleModel);
 
             await UnitOfWork.UpdateAsync(model);
 

@@ -10,6 +10,7 @@ using Project.Model;
 using Project.Model.Common;
 using Project.Model.Common.IVehicleModelDomainModels;
 using Project.Model.VehicleModelDomainModels;
+using Project.Service.Common.IVehicleMakeServices;
 using Project.Service.Common.IVehicleModelServices;
 using Project.WebAPI.IModels.IVehicleModelRestModels;
 using Project.WebAPI.Models.VehicleModelRestModels;
@@ -22,15 +23,17 @@ namespace Project.WebAPI.Controllers
     public class VehicleModelController : ControllerBase
     {
         public IVehicleModelService VehicleModelService { get; set; }
+        public IVehicleMakeService VehicleMakeService { get; set; }
         public IMapper Mapper { get; set; }
 
-        public VehicleModelController(IVehicleModelService vehicleModelService, IMapper mapper)
+        public VehicleModelController(IVehicleModelService vehicleModelService, IVehicleMakeService vehicleMakeService, IMapper mapper)
         {
             VehicleModelService = vehicleModelService;
+            VehicleMakeService = vehicleMakeService;
             Mapper = mapper;
         }
 
-        // POST api/vehiclemake/paginated
+        // POST api/vehiclemodel/paginated
         [HttpPost("paginated")]
         public async Task<ActionResult> GetPaginatedVehicleModelsAsync([FromBody]PageSettings pageSettings)
         {
@@ -42,8 +45,7 @@ namespace Project.WebAPI.Controllers
         }
 
 
-
-        // GET api/vehiclemake/get/{id}
+        // GET api/vehiclemodel/get/{id}
         [HttpGet("get/{id}")]
         public async Task<ActionResult<IVehicleModelRestModel>> GetVehicleByIdAsync(Guid id)
         {
@@ -64,7 +66,7 @@ namespace Project.WebAPI.Controllers
         }
 
 
-        // POST api/vehiclemake/createVehicle
+        // POST api/vehiclemodel/create
         [HttpPost("create")]
         public async Task<IActionResult> CreateVehicleModelAsync([FromBody] CreateVehicleModelRestModel createModel)
         {
@@ -86,7 +88,7 @@ namespace Project.WebAPI.Controllers
 
         }
 
-        // PUT api/vehiclemake/update
+        // PUT api/vehiclemodel/update
         [HttpPost("update")]
         public async Task<IActionResult> UpdateVehicleModelAsync([FromBody] UpdateVehicleModelRestModel updateModel)
         {
@@ -109,7 +111,7 @@ namespace Project.WebAPI.Controllers
 
         }
 
-        // DELETE api/vehiclemake/delete/{id}
+        // DELETE api/vehiclemodel/delete/{id}
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteVehicleModelAsync(Guid id)
         {
@@ -124,8 +126,7 @@ namespace Project.WebAPI.Controllers
         }
 
     }
-
-
-
-
 }
+
+
+

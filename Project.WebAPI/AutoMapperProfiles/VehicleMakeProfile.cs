@@ -27,6 +27,8 @@ namespace Project.WebAPI.AutoMapperProfiles
             CreateMap<VehicleMake, CreateVehicleMakeRestModel>();
             CreateMap<VehicleMake, UpdateVehicleMakeRestModel>();
 
+            CreateMap<VehicleMake, VehicleMakeRestModel>();
+
             // page
             CreateMap<VehicleMakePageRestModel, Page<IVehicleMake>>();
             CreateMap<Page<IVehicleMake>, VehicleMakePageRestModel>()

@@ -13,7 +13,9 @@ namespace Project.Service.Common.IVehicleMakeServices
 {
     public interface IVehicleMakeService
     {
-        Task<IVehicleMakeEntity> GetVehicleMakeByIdAsync(Guid id);
+        Task<IVehicleMake> GetVehicleMakeByIdAsync(Guid id);
+
+        Task<List<IVehicleMake>> GetVehiclesAsync();
 
         Task<IPage<IVehicleMake>> GetPaginatedFilteredListAsync(IPageSettings pageSettings);
 

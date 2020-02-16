@@ -17,8 +17,31 @@ namespace Project.WebAPI
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+
+            var host = CreateWebHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                try
+                {
+                    var context = services.GetRequiredService<VehicleContext>();
+                    bool something = context.Database.EnsureCreated();
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Stack: ", ex.StackTrace);
+                    Debug.WriteLine("Message: ", ex.Message);
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred creating the DB.");
+                }
+            }
+
+            host.Run();
         }
+    
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

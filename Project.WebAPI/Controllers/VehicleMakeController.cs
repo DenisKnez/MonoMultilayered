@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Project.DAL.DomainModels;
-using Project.DAL.IDomainModels;
 using Project.Model;
-using Project.Service.Common;
 using Microsoft.AspNetCore.Http;
 using Project.Model.Common;
-using Microsoft.AspNetCore.Cors;
 using Project.Common;
 using AutoMapper;
-using Project.Common.Interfaces;
 using Project.WebAPI.Models.IVehicleMakeRestModels;
 using Project.WebAPI.Models.VehicleMakeRestModels.CRUD;
 using Project.Model.VehicleMakeDomainModels;
@@ -47,6 +42,23 @@ namespace Project.WebAPI.Controllers
         }
 
 
+        // GET api/vehiclemake/
+        public async Task<ActionResult<List<IVehicleMakeRestModel>>> GetVehiclesAsync()
+        {
+            var something = await VehicleMakeService.GetVehiclesAsync();
+
+            var vehicles = Mapper.Map<List<VehicleMakeRestModel>>(something);
+
+            if (vehicles == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(Mapper.Map<List<VehicleMakeRestModel>>(vehicles));
+            }
+        }
+
 
         // GET api/vehiclemake/get/{id}
         [HttpGet("get/{id}")]
@@ -69,7 +81,7 @@ namespace Project.WebAPI.Controllers
         }
 
 
-        // POST api/vehiclemake/createVehicle
+        // POST api/vehiclemake/create
         [HttpPost("create")]
         public async Task<IActionResult> CreateVehicleMakeAsync([FromBody] CreateVehicleMakeRestModel createModel)
         {

@@ -11,7 +11,7 @@ namespace Project.Service.Common.IVehicleModelServices
 {
     public interface IVehicleModelService
     {
-        Task<IVehicleModelEntity> GetVehicleModelByIdAsync(Guid id);
+        Task<IVehicleModel> GetVehicleModelByIdAsync(Guid id);
 
         Task<IPage<IVehicleModel>> GetPaginatedFilteredListAsync(IPageSettings pageSettings);
 
