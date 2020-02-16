@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Project.DAL;
 using Project.DAL.Context;
 using Project.Repository.Common;
 using Project.Repository.Common.Repositories;
@@ -31,7 +32,7 @@ namespace Project.Repository
             VehicleModelRepository = vehicleModelRepository;
         }
 
-        public virtual Task<int> AddAsync<T>(T entity) where T : class
+        public virtual Task<int> AddAsync<TEntity>(TEntity entity) where TEntity : BaseEntity
         {
             try
             {
@@ -42,7 +43,7 @@ namespace Project.Repository
                 }
                 else
                 {
-                    DbContext.Set<T>().Add(entity);
+                    DbContext.Set<TEntity>().Add(entity);
                 }
                 return Task.FromResult(1);
             }
@@ -53,14 +54,14 @@ namespace Project.Repository
 
         }
 
-        public virtual Task<int> UpdateAsync<T>(T entity) where T : class
+        public virtual Task<int> UpdateAsync<TEntity>(TEntity entity) where TEntity : BaseEntity
         {
             try
             {
                 var dbEntityEntry = DbContext.Entry(entity);
                 if (dbEntityEntry.State == EntityState.Detached)
                 {
-                    DbContext.Set<T>().Attach(entity);
+                    DbContext.Set<TEntity>().Attach(entity);
                 }
                 dbEntityEntry.State = EntityState.Modified;
                 return Task.FromResult(1);
@@ -72,7 +73,7 @@ namespace Project.Repository
 
         }
 
-        public virtual Task<int> DeleteAsync<T>(T entity) where T : class
+        public virtual Task<int> DeleteAsync<TEntity>(TEntity entity) where TEntity : BaseEntity
         {
             try
             {
@@ -83,8 +84,8 @@ namespace Project.Repository
                 }
                 else
                 {
-                    DbContext.Set<T>().Attach(entity);
-                    DbContext.Set<T>().Remove(entity);
+                    DbContext.Set<TEntity>().Attach(entity);
+                    DbContext.Set<TEntity>().Remove(entity);
                 }
                 return Task.FromResult(1);
             }
@@ -95,14 +96,14 @@ namespace Project.Repository
 
         }
 
-        public virtual Task<int> DeleteAsync<T>(Guid id) where T : class
+        public virtual Task<int> DeleteAsync<TEntity>(Guid id) where TEntity : BaseEntity
         {
-            var entity = DbContext.Set<T>().Find(id);
+            var entity = DbContext.Set<TEntity>().Find(id);
             if (entity == null)
             {
                 return Task.FromResult(0);
             }
-            return DeleteAsync<T>(entity);
+            return DeleteAsync<TEntity>(entity);
         }
 
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Project.Repository.Common.Repositories
 {
-    public interface IVehicleMakeRepository : IRepository<VehicleMake>
+    public interface IVehicleMakeRepository : IRepository<VehicleMakeEntity>
     {
 
 

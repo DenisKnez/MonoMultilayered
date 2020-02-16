@@ -8,12 +8,17 @@ using Project.DAL.IDomainModels;
 using Project.Model;
 using Project.Service.Common;
 using Microsoft.AspNetCore.Http;
-using Project.Model.VehicleMakeModels.CRUD;
 using Project.Model.Common;
 using Microsoft.AspNetCore.Cors;
 using Project.Common;
 using AutoMapper;
 using Project.Common.Interfaces;
+using Project.WebAPI.Models.IVehicleMakeRestModels;
+using Project.WebAPI.Models.VehicleMakeRestModels.CRUD;
+using Project.Model.VehicleMakeDomainModels;
+using Project.WebAPI.Models.VehicleMakeRestModels;
+using Project.Model.Common.IVehicleMakeDomainModels;
+using Project.Service.Common.IVehicleMakeServices;
 
 namespace Project.WebAPI.Controllers
 {
@@ -36,17 +41,7 @@ namespace Project.WebAPI.Controllers
         {
             IPage<IVehicleMake> vehicles =  await VehicleMakeService.GetPaginatedFilteredListAsync(pageSettings);
 
-            List<VehicleMakeModel_Model> makeModels = Mapper.Map<List<VehicleMakeModel_Model>>(vehicles.Items);
-
-            var model = new VehicleMakePage_Model()
-            {
-                Items = makeModels.Cast<IVehicleMakeModel_Model>().ToList(),
-                PageIndex = vehicles.PageIndex,
-                TotalPages = vehicles.TotalPages,
-                SearchString = pageSettings.SearchString,
-                SortOrder = pageSettings.SortOrder
-            };
-
+            VehicleMakePageRestModel model = Mapper.Map<VehicleMakePageRestModel>((Page<IVehicleMake>)vehicles);
 
             return Ok(model);
         }
@@ -55,11 +50,10 @@ namespace Project.WebAPI.Controllers
 
         // GET api/vehiclemake/get/{id}
         [HttpGet("get/{id}")]
-        public async Task<ActionResult<IVehicleMakeModel_Model>> GetVehicleByIdAsync(Guid id)
+        public async Task<ActionResult<IVehicleMakeRestModel>> GetVehicleByIdAsync(Guid id)
         {
 
             var vehicle = await VehicleMakeService.GetVehicleMakeByIdAsync(id);
-
 
             if (vehicle == null)
             {
@@ -67,7 +61,7 @@ namespace Project.WebAPI.Controllers
             }
             else
             {
-                var vehicleModel = Mapper.Map<VehicleMakeModel_Model>(vehicle);
+                var vehicleModel = Mapper.Map<VehicleMakeRestModel>(vehicle);
 
                 return Ok(vehicleModel);
             }
@@ -77,19 +71,15 @@ namespace Project.WebAPI.Controllers
 
         // POST api/vehiclemake/createVehicle
         [HttpPost("create")]
-        public async Task<IActionResult> CreateVehicleMakeAsync([FromBody] CreateVehicleMake_Model createModel)
+        public async Task<IActionResult> CreateVehicleMakeAsync([FromBody] CreateVehicleMakeRestModel createModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            // TODO: automapper
-            IVehicleMake vehicle = new VehicleMake()
-            {
-                Name = createModel.Name,
-                Abrv = createModel.Abrv
-            };
+            var vehicle = Mapper.Map<VehicleMake>(createModel);
+
 
             var isCreated = await VehicleMakeService.CreateVehicleMakeAsync(vehicle);
 
@@ -103,7 +93,7 @@ namespace Project.WebAPI.Controllers
 
         // PUT api/vehiclemake/update
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateVehicleMakeAsync([FromBody] UpdateVehicleMake_Model updateModel)
+        public async Task<IActionResult> UpdateVehicleMakeAsync([FromBody] UpdateVehicleMakeRestModel updateModel)
         {
 
             if (!ModelState.IsValid)
@@ -111,12 +101,7 @@ namespace Project.WebAPI.Controllers
                 return BadRequest();
             }
 
-            IVehicleMake vehicle = new VehicleMake()
-            {
-                Id = updateModel.Id,
-                Name = updateModel.Name,
-                Abrv = updateModel.Abrv
-            };
+            var vehicle = Mapper.Map<VehicleMake>(updateModel);
 
             var isUpdated = await VehicleMakeService.UpdateVehicleMakeAsync(vehicle);
 

@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Project.Common.Interfaces
 {
-    public interface IPage<T>
-    {
-        List<T> Items { get; set; }
+    //public interface IPage<T>
+    //{
+    //    List<T> Items { get; set; }
 
-        int TotalPages { get; set; }
+    //    int TotalPages { get; set; }
 
-        int PageIndex { get; set; }
+    //    int PageIndex { get; set; }
 
-    }
+    //}
 }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Project.Repository.Repositories
 {
-    public class VehicleMakeRepository : Repository<VehicleMake>, IVehicleMakeRepository
+    public class VehicleMakeRepository : Repository<VehicleMakeEntity>, IVehicleMakeRepository
     {
 
         public VehicleMakeRepository(VehicleContext context) : base(context)

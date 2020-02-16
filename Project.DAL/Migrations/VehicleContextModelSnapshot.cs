@@ -19,7 +19,7 @@ namespace Project.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Project.DAL.DomainModels.VehicleMake", b =>
+            modelBuilder.Entity("Project.DAL.DomainModels.VehicleMakeEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -37,7 +37,7 @@ namespace Project.DAL.Migrations
                     b.ToTable("VehicleMake");
                 });
 
-            modelBuilder.Entity("Project.DAL.DomainModels.VehicleModel", b =>
+            modelBuilder.Entity("Project.DAL.DomainModels.VehicleModelEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -50,20 +50,20 @@ namespace Project.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(80);
 
-                    b.Property<Guid>("VehicleMakeId");
+                    b.Property<Guid>("VehicleMakeEntityId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("VehicleMakeId");
+                    b.HasIndex("VehicleMakeEntityId");
 
                     b.ToTable("VehicleModel");
                 });
 
-            modelBuilder.Entity("Project.DAL.DomainModels.VehicleModel", b =>
+            modelBuilder.Entity("Project.DAL.DomainModels.VehicleModelEntity", b =>
                 {
-                    b.HasOne("Project.DAL.DomainModels.VehicleMake", "VehicleMake")
+                    b.HasOne("Project.DAL.DomainModels.VehicleMakeEntity", "VehicleMakeEntity")
                         .WithMany("VehicleModels")
-                        .HasForeignKey("VehicleMakeId")
+                        .HasForeignKey("VehicleMakeEntityId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

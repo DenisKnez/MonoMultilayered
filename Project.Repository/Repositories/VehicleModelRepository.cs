@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Project.Repository.Repositories
 {
-    public class VehicleModelRepository : Repository<VehicleModel>, IVehicleModelRepository
+    public class VehicleModelRepository : Repository<VehicleModelEntity>, IVehicleModelRepository
     {
         public VehicleModelRepository(VehicleContext context) : base(context)
         {

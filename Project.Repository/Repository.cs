@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Project.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly VehicleContext context;
         private DbSet<TEntity> dbSet;
