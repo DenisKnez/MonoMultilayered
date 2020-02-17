@@ -13,6 +13,7 @@ using Project.WebAPI.Models.VehicleMakeRestModels.CRUD;
 using Project.Model.Common.IVehicleMakeDomainModels;
 using AutoMapper.Configuration;
 using Project.WebAPI.Models.VehicleMakeRestModels;
+using Project.Model.VehicleMakeDomainModels.CRUD;
 
 namespace Project.WebAPI.AutoMapperProfiles
 {
@@ -20,20 +21,23 @@ namespace Project.WebAPI.AutoMapperProfiles
     {
         public VehicleMakeProfile()
         {
+            //create
+            CreateMap<CreateVehicleMakeRestModel, CreateVehicleMake>();
+            CreateMap<CreateVehicleMake, VehicleMakeEntity>();
+
+            // update
+            CreateMap<UpdateVehicleMakeRestModel, UpdateVehicleMake>();
+            CreateMap<UpdateVehicleMake, VehicleMakeEntity>();
 
 
-            CreateMap<VehicleMakeEntity, VehicleMake>();
             // get
-            CreateMap<VehicleMake, CreateVehicleMakeRestModel>();
-            CreateMap<VehicleMake, UpdateVehicleMakeRestModel>();
-
+            CreateMap<VehicleMakeEntity, VehicleMake>();
             CreateMap<VehicleMake, VehicleMakeRestModel>();
 
             // page
             CreateMap<VehicleMakePageRestModel, Page<IVehicleMake>>();
             CreateMap<Page<IVehicleMake>, VehicleMakePageRestModel>()
                 .ForMember(x => x.Items, y => y.MapFrom(z => z.Items.ConvertAll(m => new VehicleMakeRestModel() { Id = m.Id, Name = m.Name, Abrv = m.Abrv })));
-            //.ForMember(x => x.TotalPages, y => y.MapFrom(z => z.TotalPages))
 
         }
 

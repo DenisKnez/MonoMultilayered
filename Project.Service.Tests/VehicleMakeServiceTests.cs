@@ -16,6 +16,8 @@ using Project.DAL.IDomainModels;
 using FluentAssertions;
 using Project.Model.VehicleMakeDomainModels;
 using Project.Service.VehicleMakeServices;
+using AutoMapper;
+using Project.Model.VehicleMakeDomainModels.CRUD;
 
 namespace Project.Service.Tests
 {
@@ -29,24 +31,27 @@ namespace Project.Service.Tests
         public async void CreateVehicleMakeAsync_ReturnsCorrect(int numberofSuccessfulCommits)
         {
             //arrange
-            var vehicle = new VehicleMakeEntity() { Name = "someName", Abrv = "someAbrv" };
+            var vehicleEntity = new VehicleMakeEntity() { Name = "someName", Abrv = "someAbrv" };
+            var vehicle = new CreateVehicleMake() { Id = Guid.Empty, Name = "someName", Abrv = "someAbrv" };
 
             var unit = new Mock<IUnitOfWork>();
-            unit.Setup(x => x.AddAsync(vehicle)).Returns(Task.FromResult(1));
+            unit.Setup(x => x.AddAsync(vehicleEntity)).Returns(Task.FromResult(1));
             unit.Setup(x => x.CommitAsync()).Returns(Task.FromResult(numberofSuccessfulCommits));
 
+            var mapper = new Mock<IMapper>();
+            mapper.Setup(x => x.Map<VehicleMakeEntity>(It.IsAny<CreateVehicleMake>())).Returns(new VehicleMakeEntity());
 
             //act
-            //VehicleMakeService service = new VehicleMakeService(unit.Object);
+            VehicleMakeService service = new VehicleMakeService(unit.Object, mapper.Object);
 
-            //bool isCreated = await service.CreateVehicleMakeAsync(vehicle);
+            bool isCreated = await service.CreateVehicleMakeAsync(vehicle);
 
 
             //assert
-            //if(numberofSuccessfulCommits == 0)
-            //    isCreated.Should().BeFalse();
-            //else
-            //    isCreated.Should().BeTrue();
+            if (numberofSuccessfulCommits == 0)
+                isCreated.Should().BeFalse();
+            else
+                isCreated.Should().BeTrue();
 
 
         }
@@ -59,26 +64,31 @@ namespace Project.Service.Tests
         public async void UpdateVehicleMakeAsync_ReturnsCorrect(int numberofSuccessfulCommits)
         {
             //arrange
-            var vehicle = new VehicleMakeEntity() { Id = new Guid(), Name = "someName", Abrv = "someAbrv" };
+            var vehicleEntity = new VehicleMakeEntity() { Id = new Guid(), Name = "someName", Abrv = "someAbrv" };
+            var vehicle = new UpdateVehicleMake() { Id = new Guid(), Name = "someName", Abrv = "someAbrv" };
+
 
             var unit = new Mock<IUnitOfWork>();
 
-            unit.Setup(x => x.UpdateAsync(vehicle)).Returns(Task.FromResult(1));
+            unit.Setup(x => x.UpdateAsync(vehicleEntity)).Returns(Task.FromResult(1));
             unit.Setup(x => x.CommitAsync()).Returns(Task.FromResult(numberofSuccessfulCommits));
+
+            var mapper = new Mock<IMapper>();
+            mapper.Setup(x => x.Map<VehicleMakeEntity>(It.IsAny<UpdateVehicleMake>())).Returns(new VehicleMakeEntity());
 
             //act
 
-            //VehicleMakeService service = new VehicleMakeService(unit.Object);
+            VehicleMakeService service = new VehicleMakeService(unit.Object, mapper.Object);
 
-            //var isUpdated = await service.UpdateVehicleMakeAsync(vehicle);
+            var isUpdated = await service.UpdateVehicleMakeAsync(vehicle);
 
 
 
             //assert
-            //if (numberofSuccessfulCommits == 0)
-            //    isUpdated.Should().BeFalse();
-            //else
-            //    isUpdated.Should().BeTrue();
+            if (numberofSuccessfulCommits == 0)
+                isUpdated.Should().BeFalse();
+            else
+                isUpdated.Should().BeTrue();
 
         }
 
@@ -89,26 +99,27 @@ namespace Project.Service.Tests
         public async void DeleteVehicleMakeAsync_ReturnsCorrect(int numberofSuccessfulCommits)
         {
             //arrange
-            var vehicle = new VehicleMake() { Id = new Guid(), Name = "someName", Abrv = "someAbrv" };
-
+            var vehicle = new VehicleMakeEntity() { Id = new Guid(), Name = "someName", Abrv = "someAbrv" };
             var unit = new Mock<IUnitOfWork>();
 
             unit.Setup(x => x.DeleteAsync<VehicleMakeEntity>(vehicle.Id)).Returns(Task.FromResult(1));
             unit.Setup(x => x.CommitAsync()).Returns(Task.FromResult(numberofSuccessfulCommits));
 
+            var mapper = new Mock<IMapper>();
+
+
             //act
+            VehicleMakeService service = new VehicleMakeService(unit.Object, mapper.Object);
 
-            //VehicleMakeService service = new VehicleMakeService(unit.Object);
-
-            //var isDeleted = await service.DeleteVehicleMakeAsync(vehicle.Id);
+            var isDeleted = await service.DeleteVehicleMakeAsync(vehicle.Id);
 
 
 
             //assert
-            //if (numberofSuccessfulCommits == 0)
-            //    isDeleted.Should().BeFalse();
-            //else
-            //    isDeleted.Should().BeTrue();
+            if (numberofSuccessfulCommits == 0)
+                isDeleted.Should().BeFalse();
+            else
+                isDeleted.Should().BeTrue();
         }
 
 

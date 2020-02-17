@@ -14,6 +14,7 @@ using Project.Model.VehicleMakeDomainModels;
 using Project.WebAPI.Models.VehicleMakeRestModels;
 using Project.Model.Common.IVehicleMakeDomainModels;
 using Project.Service.Common.IVehicleMakeServices;
+using Project.Model.VehicleMakeDomainModels.CRUD;
 
 namespace Project.WebAPI.Controllers
 {
@@ -43,6 +44,7 @@ namespace Project.WebAPI.Controllers
 
 
         // GET api/vehiclemake/
+        [HttpGet]
         public async Task<ActionResult<List<IVehicleMakeRestModel>>> GetVehiclesAsync()
         {
             var something = await VehicleMakeService.GetVehiclesAsync();
@@ -90,7 +92,7 @@ namespace Project.WebAPI.Controllers
                 return BadRequest();
             }
 
-            var vehicle = Mapper.Map<VehicleMake>(createModel);
+            var vehicle = Mapper.Map<CreateVehicleMake>(createModel);
 
 
             var isCreated = await VehicleMakeService.CreateVehicleMakeAsync(vehicle);
@@ -113,7 +115,7 @@ namespace Project.WebAPI.Controllers
                 return BadRequest();
             }
 
-            var vehicle = Mapper.Map<VehicleMake>(updateModel);
+            var vehicle = Mapper.Map<UpdateVehicleMake>(updateModel);
 
             var isUpdated = await VehicleMakeService.UpdateVehicleMakeAsync(vehicle);
 

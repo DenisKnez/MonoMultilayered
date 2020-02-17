@@ -11,7 +11,7 @@ namespace Project.DAL.DomainModels
 
         public string Abrv { get; set; }
 
-        //public Guid VehicleMakeEntityId { get; set; }
+        public Guid VehicleMakeEntityId { get; set; }
 
         public VehicleMakeEntity VehicleMakeEntity { get; set; }
 

@@ -14,6 +14,7 @@ using Project.Model.Common.IVehicleMakeDomainModels;
 using AutoMapper;
 using Project.Service.Common.IVehicleMakeServices;
 using Project.Model.VehicleMakeDomainModels;
+using Project.Model.Common.IVehicleMakeDomainModels.CRUD;
 
 namespace Project.Service.VehicleMakeServices
 {
@@ -92,7 +93,7 @@ namespace Project.Service.VehicleMakeServices
         public async Task<IVehicleMake> GetVehicleMakeByIdAsync(Guid id)
         {
             
-            return Mapper.Map<IVehicleMake>(await UnitOfWork.VehicleMakeRepository.GetByIdAsync(id));
+            return Mapper.Map<VehicleMake>(await UnitOfWork.VehicleMakeRepository.GetByIdAsync(id));
 
         }
 
@@ -101,7 +102,7 @@ namespace Project.Service.VehicleMakeServices
         /// </summary>
         /// <param name="vehicleMake"></param>
         /// <returns>true if the creation was successful</returns>
-        public async Task<bool> CreateVehicleMakeAsync(IVehicleMake vehicleMake)
+        public async Task<bool> CreateVehicleMakeAsync(ICreateVehicleMake vehicleMake)
         {
             //var vehicle = await VehicleMakeRepository.AddAsync();
 
@@ -116,7 +117,7 @@ namespace Project.Service.VehicleMakeServices
         }
 
 
-        public async Task<bool> UpdateVehicleMakeAsync(IVehicleMake vehicleMake)
+        public async Task<bool> UpdateVehicleMakeAsync(IUpdateVehicleMake vehicleMake)
         {
             var model = Mapper.Map<VehicleMakeEntity>(vehicleMake);
 

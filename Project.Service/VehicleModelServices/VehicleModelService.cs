@@ -7,6 +7,7 @@ using Project.Model;
 using Project.Model.Common;
 using Project.Model.Common.IVehicleMakeDomainModels;
 using Project.Model.Common.IVehicleModelDomainModels;
+using Project.Model.Common.IVehicleModelDomainModels.CRUD;
 using Project.Model.VehicleModelDomainModels;
 using Project.Repository.Common;
 using Project.Service.Common.IVehicleModelServices;
@@ -21,7 +22,7 @@ namespace Project.Service.VehicleModelServices
     public class VehicleModelService : IVehicleModelService
     {
         public IUnitOfWork UnitOfWork { get; set; }
-        public IMapper Mapper { get; set; }
+        public IMapper Mapper { get; set; } 
 
 
         public VehicleModelService(IUnitOfWork unitOfWork, IMapper mapper)
@@ -37,13 +38,16 @@ namespace Project.Service.VehicleModelServices
 
             if (!String.IsNullOrEmpty(pageSettings.SearchString))
             {
-                tableQuery = tableQuery.Where(x => x.Name.Contains(pageSettings.SearchString));
+                tableQuery = tableQuery.Where(x => x.VehicleMakeEntity.Name.Contains(pageSettings.SearchString));
             }
 
 
             switch (pageSettings.SortOrder)
             {
                 case "name":
+                    tableQuery = tableQuery.OrderBy(x => x.VehicleMakeEntity.Name);
+                    break;
+                case "model":
                     tableQuery = tableQuery.OrderBy(x => x.Name);
                     break;
                 case "abrv":
@@ -81,7 +85,9 @@ namespace Project.Service.VehicleModelServices
 
         public async Task<IVehicleModel> GetVehicleModelByIdAsync(Guid id)
         {
-            return Mapper.Map<VehicleModel>(await UnitOfWork.VehicleModelRepository.GetByIdAsync(id));
+            var vehicle = await UnitOfWork.VehicleModelRepository.TableAsNoTracking.Where(x => x.Id == id).Include(y => y.VehicleMakeEntity).FirstOrDefaultAsync();
+
+            return Mapper.Map<VehicleModel>(vehicle);
         }
 
         /// <summary>
@@ -89,9 +95,9 @@ namespace Project.Service.VehicleModelServices
         /// </summary>
         /// <param name="vehicleModel"></param>
         /// <returns>true if the creation was successful</returns>
-        public async Task<bool> CreateVehicleModelAsync(IVehicleModel vehicleModel)
+        public async Task<bool> CreateVehicleModelAsync(ICreateVehicleModel vehicleModel)
         {
-            var model = Mapper.Map<VehicleMakeEntity>(vehicleModel);
+            var model = Mapper.Map<VehicleModelEntity>(vehicleModel);
 
             await UnitOfWork.AddAsync(model);
 
@@ -101,9 +107,9 @@ namespace Project.Service.VehicleModelServices
         }
 
 
-        public async Task<bool> UpdateVehicleModelAsync(IVehicleModel vehicleModel)
+        public async Task<bool> UpdateVehicleModelAsync(IUpdateVehicleModel vehicleModel)
         {
-            var model = Mapper.Map<VehicleMakeEntity>(vehicleModel);
+            var model = Mapper.Map<VehicleModelEntity>(vehicleModel);
 
             await UnitOfWork.UpdateAsync(model);
 
@@ -115,7 +121,7 @@ namespace Project.Service.VehicleModelServices
 
         public async Task<bool> DeleteVehicleModelAsync(Guid vehicleId)
         {
-            await UnitOfWork.DeleteAsync<VehicleMakeEntity>(vehicleId);
+            await UnitOfWork.DeleteAsync<VehicleModelEntity>(vehicleId);
 
             var result = await UnitOfWork.CommitAsync();
 

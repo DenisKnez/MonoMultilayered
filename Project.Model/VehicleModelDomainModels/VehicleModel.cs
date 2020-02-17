@@ -15,8 +15,6 @@ namespace Project.Model.VehicleModelDomainModels
 
         public string Abrv { get; set; }
 
-        //public Guid VehicleMakeId { get; set; }
-
         public IVehicleMake VehicleMake { get; set; }
 
     }

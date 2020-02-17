@@ -1,4 +1,6 @@
-﻿using Project.WebAPI.IModels.IVehicleModelRestModels.CRUD;
+﻿using Project.Model.Common.IVehicleMakeDomainModels;
+using Project.Model.VehicleMakeDomainModels;
+using Project.WebAPI.IModels.IVehicleModelRestModels.CRUD;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace Project.WebAPI.Models.VehicleModelRestModels.CRUD
         public string Name { get; set; }
 
         public string Abrv { get; set; }
+
+        public Guid VehicleMakeId { get; set; }
     } 
 }
 

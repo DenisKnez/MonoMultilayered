@@ -10,6 +10,7 @@ using Project.Model;
 using Project.Model.Common;
 using Project.Model.Common.IVehicleModelDomainModels;
 using Project.Model.VehicleModelDomainModels;
+using Project.Model.VehicleModelDomainModels.CRUD;
 using Project.Service.Common.IVehicleMakeServices;
 using Project.Service.Common.IVehicleModelServices;
 using Project.WebAPI.IModels.IVehicleModelRestModels;
@@ -75,7 +76,7 @@ namespace Project.WebAPI.Controllers
                 return BadRequest();
             }
 
-            var vehicle = Mapper.Map<VehicleModel>(createModel);
+            var vehicle = Mapper.Map<CreateVehicleModel>(createModel);
 
 
             var isCreated = await VehicleModelService.CreateVehicleModelAsync(vehicle);
@@ -98,7 +99,7 @@ namespace Project.WebAPI.Controllers
                 return BadRequest();
             }
 
-            var vehicle = Mapper.Map<VehicleModel>(updateModel);
+            var vehicle = Mapper.Map<UpdateVehicleModel>(updateModel);
 
             var isUpdated = await VehicleModelService.UpdateVehicleModelAsync(vehicle);
 

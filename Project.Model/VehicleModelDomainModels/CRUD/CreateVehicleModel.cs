@@ -1,13 +1,13 @@
 ﻿using Project.Model.Common.IVehicleMakeDomainModels;
-using Project.WebAPI.IModels.IVehicleModelRestModels.CRUD;
+using Project.Model.Common.IVehicleModelDomainModels.CRUD;
+using Project.Model.VehicleMakeDomainModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Project.WebAPI.Models.VehicleModelRestModels.CRUD
+namespace Project.Model.VehicleModelDomainModels.CRUD
 {
-    public class UpdateVehicleModelRestModel : IUpdateVehicleModelRestModel
+    public class CreateVehicleModel : ICreateVehicleModel
     {
         public Guid Id { get; set; }
 

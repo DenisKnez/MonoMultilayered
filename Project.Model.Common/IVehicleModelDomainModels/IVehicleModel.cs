@@ -13,8 +13,6 @@ namespace Project.Model.Common.IVehicleModelDomainModels
 
         string Abrv { get; set; }
 
-        //Guid VehicleMakeId { get; set; }
-
         IVehicleMake VehicleMake { get; set; }
 
     }

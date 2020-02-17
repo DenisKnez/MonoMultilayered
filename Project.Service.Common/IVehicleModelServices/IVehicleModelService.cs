@@ -2,6 +2,7 @@
 using Project.DAL.IDomainModels;
 using Project.Model.Common;
 using Project.Model.Common.IVehicleModelDomainModels;
+using Project.Model.Common.IVehicleModelDomainModels.CRUD;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,9 +16,9 @@ namespace Project.Service.Common.IVehicleModelServices
 
         Task<IPage<IVehicleModel>> GetPaginatedFilteredListAsync(IPageSettings pageSettings);
 
-        Task<bool> CreateVehicleModelAsync(IVehicleModel vehicleMake);
+        Task<bool> CreateVehicleModelAsync(ICreateVehicleModel vehicleMake);
 
-        Task<bool> UpdateVehicleModelAsync(IVehicleModel vehicleMake);
+        Task<bool> UpdateVehicleModelAsync(IUpdateVehicleModel vehicleMake);
 
         Task<bool> DeleteVehicleModelAsync(Guid vehicleId);
 
