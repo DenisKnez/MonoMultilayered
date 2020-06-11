@@ -3,6 +3,7 @@ using Ninject;
 using Ninject.Modules;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,10 +28,20 @@ namespace Project.MVC.Ninject
         {
             var config = new MapperConfiguration(cfg =>
             {
+                List<Profile> profiles = new List<Profile>();
+
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(assembly => assembly.FullName.Contains("Project.")))
+                {
+                    var notProfiles = assembly.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t));
+                    foreach (var profile in notProfiles)
+                    {
+                        Debug.WriteLine($"Profile: {profile.Name}, Assembly: {profile.Assembly}");
+                    }
+
+                    profiles.AddRange(assembly.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t)).Select(t => (Profile)Activator.CreateInstance(t)));
+                }
+
                 // Add all profiles in current assembly
-
-                var profiles = GetType().Assembly.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t)).Select(t => (Profile)Activator.CreateInstance(t));
-
                 cfg.AddProfiles(profiles);
             });
 
