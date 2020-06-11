@@ -33,7 +33,7 @@ namespace Project.MVC.Ninject
                     RequestScopingStartupFilter(requestScopeProvider));
 
 
-            services.AddDbContext<VehicleContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<VehicleContext>(options => options.UseNpgsql(connectionString));
 
             services.AddAutoMapper(typeof(Startup));
 

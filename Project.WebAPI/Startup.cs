@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Ninject;
@@ -56,11 +56,11 @@ namespace Project.WebAPI
             services.AddCustomViewComponentActivation(Resolve);
 
             services.AddCors(options => options.AddPolicy("policy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -78,7 +78,7 @@ namespace Project.WebAPI
 
             app.UseCors("policy");
             app.UseHttpsRedirection();
-            app.UseMvc();
+            //app.UseMvc();
         }
 
 
@@ -94,12 +94,6 @@ namespace Project.WebAPI
             settings.ExtensionSearchPatterns.Union(new string[]
             {"*.dll"}).ToArray();
 
-
-            foreach (var item in settings.ExtensionSearchPatterns)
-            {
-                Debug.WriteLine("something: " + item);
-            }
-
             var kernel = new StandardKernel(settings);
 
 
@@ -110,7 +104,7 @@ namespace Project.WebAPI
             }
 
             // This is where our bindings are configurated
-            kernel.Bind<VehicleContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<VehicleContext>().UseSqlServer(Configuration.GetConnectionString("SQLserverConnection")).Options);
+            kernel.Bind<VehicleContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<VehicleContext>().UseNpgsql(Configuration.GetConnectionString("SQLserverConnection")).Options);
 
             //// Cross-wire required framework services
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
