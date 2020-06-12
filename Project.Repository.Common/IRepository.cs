@@ -11,8 +11,11 @@ namespace Project.Repository.Common
 {
     public interface IRepository<TEntity>
     {
-        Task<TEntity> GetByIdAsync(Guid id);
-        IQueryable<TEntity> Table { get; }
-        IQueryable<TEntity> TableAsNoTracking { get; }
+        Task<TEntity> GetAsync(Guid id);
+        IAsyncEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        void Add(TEntity entity);
+        Task Delete(TEntity entity);
+        void Update(TEntity entity);
+
     }
 }

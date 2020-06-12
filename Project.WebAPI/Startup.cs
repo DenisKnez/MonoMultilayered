@@ -63,7 +63,7 @@ namespace Project.WebAPI
             services.ConfigureRunner(rb =>
                 rb.AddPostgres()
                     .WithGlobalConnectionString(Configuration.GetConnectionString("PostgreDatabase"))
-                    .ScanIn(Assembly.Load(Assembly.GetAssembly(typeof(VehicleContext)).GetName()))
+                    .ScanIn(Assembly.Load(Assembly.GetAssembly(typeof(DatabaseContext)).GetName()))
                     .For.Migrations()
                     .For.EmbeddedResources());
 
@@ -125,7 +125,7 @@ namespace Project.WebAPI
 
 
             // This is where our bindings are configurated
-            kernel.Bind<VehicleContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<VehicleContext>().UseNpgsql(Configuration.GetConnectionString("PostgreDatabase")).Options);
+            kernel.Bind<DatabaseContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<DatabaseContext>().UseNpgsql(Configuration.GetConnectionString("PostgreDatabase")).Options);
 
             //// Cross-wire required framework services
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);

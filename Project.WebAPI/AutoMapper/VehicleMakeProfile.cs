@@ -13,7 +13,6 @@ using Project.WebAPI.Models.VehicleMakeRestModels.CRUD;
 using Project.Model.Common.IVehicleMakeDomainModels;
 using AutoMapper.Configuration;
 using Project.WebAPI.Models.VehicleMakeRestModels;
-using Project.Model.VehicleMakeDomainModels.CRUD;
 
 namespace Project.WebAPI.AutoMapperProfiles
 {
@@ -21,23 +20,23 @@ namespace Project.WebAPI.AutoMapperProfiles
     {
         public VehicleMakeProfile()
         {
-            //create
-            CreateMap<CreateVehicleMakeRestModel, CreateVehicleMake>();
-            CreateMap<CreateVehicleMake, VehicleMakeEntity>();
+            ////create
+            //CreateMap<CreateVehicleMakeRestModel, CreateVehicleMake>();
+            //CreateMap<CreateVehicleMake, VehicleMakeEntity>();
 
-            // update
-            CreateMap<UpdateVehicleMakeRestModel, UpdateVehicleMake>();
-            CreateMap<UpdateVehicleMake, VehicleMakeEntity>();
+            //// update
+            //CreateMap<UpdateVehicleMakeRestModel, UpdateVehicleMake>();
+            //CreateMap<UpdateVehicleMake, VehicleMakeEntity>();
 
 
-            // get
-            CreateMap<VehicleMakeEntity, VehicleMake>();
-            CreateMap<VehicleMake, VehicleMakeRestModel>();
+            //// get
+            //CreateMap<VehicleMakeEntity, VehicleMake>();
+            //CreateMap<VehicleMake, VehicleMakeRestModel>();
 
-            // page
-            CreateMap<VehicleMakePageRestModel, Page<IVehicleMake>>();
-            CreateMap<Page<IVehicleMake>, VehicleMakePageRestModel>()
-                .ForMember(x => x.Items, y => y.MapFrom(z => z.Items.ConvertAll(m => new VehicleMakeRestModel() { Id = m.Id, Name = m.Name, Abrv = m.Abrv })));
+            //// page
+            //CreateMap<VehicleMakePageRestModel, Page<IVehicleMake>>();
+            //CreateMap<Page<IVehicleMake>, VehicleMakePageRestModel>()
+            //    .ForMember(x => x.Items, y => y.MapFrom(z => z.Items.ConvertAll(m => new VehicleMakeRestModel() { Id = m.Id, Name = m.Name, Abrv = m.Abrv })));
 
         }
 
