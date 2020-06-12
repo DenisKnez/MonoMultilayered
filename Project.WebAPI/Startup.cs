@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
@@ -18,7 +21,7 @@ using Microsoft.Extensions.Options;
 using Ninject;
 using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
-using Project.DAL.Context;
+using Project.DAL;
 using Project.MVC.Ninject;
 using Project.Repository;
 using Project.Service;
@@ -31,8 +34,7 @@ namespace Project.WebAPI
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
         private IKernel Kernel { get; set; }
 
-        private object Resolve(Type type) => 
-            Kernel.Get(type);
+        private object Resolve(Type type) => Kernel.Get(type);
         private object RequestScope(IContext context) => scopeProvider.Value;
 
         private sealed class Scope : DisposableObject { }
@@ -50,13 +52,25 @@ namespace Project.WebAPI
         {
 
             //ninject 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope(), Configuration.GetConnectionString("SQLserverConnection"));
+            services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope(), Configuration.GetConnectionString("PostgreDatabase"));
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
 
-            services.AddCors(options => options.AddPolicy("policy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddControllers();
+            services.AddFluentMigratorCore();
+            services.ConfigureRunner(rb =>
+                rb.AddPostgres()
+                    .WithGlobalConnectionString(Configuration.GetConnectionString("PostgreDatabase"))
+                    .ScanIn(Assembly.Load(Assembly.GetAssembly(typeof(VehicleContext)).GetName()))
+                    .For.Migrations()
+                    .For.EmbeddedResources());
+
+            services.AddLogging(lb => lb.AddFluentMigratorConsole());
+
+            //services.AddCors(options => options.AddPolicy("policy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,10 +89,15 @@ namespace Project.WebAPI
 
             this.Kernel = this.RegisterApplicationComponents(app);
 
-
-            app.UseCors("policy");
             app.UseHttpsRedirection();
-            //app.UseMvc();
+            app.UseRouting();
+            //app.UseCors("policy");
+            app.UseHttpsRedirection();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
 
@@ -103,11 +122,15 @@ namespace Project.WebAPI
                 kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
             }
 
+
+
             // This is where our bindings are configurated
-            kernel.Bind<VehicleContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<VehicleContext>().UseNpgsql(Configuration.GetConnectionString("SQLserverConnection")).Options);
+            kernel.Bind<VehicleContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<VehicleContext>().UseNpgsql(Configuration.GetConnectionString("PostgreDatabase")).Options);
 
             //// Cross-wire required framework services
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
+            kernel.BindToMethod(app.GetRequestService<IServiceProvider>);
+            kernel.BindToMethod(app.GetRequestService<IConfiguration>);
 
             return kernel;
         }

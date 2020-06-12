@@ -6,6 +6,6 @@ namespace Project.DAL.EntityModels
 {
     public class UserEntity : BaseEntity, IUserEntity
     {
-
+        public string Name { get; set; }
     }
 }

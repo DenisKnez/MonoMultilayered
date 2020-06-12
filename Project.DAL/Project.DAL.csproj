@@ -1,11 +1,40 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="System\Migrations\Initial\Database\Initial_Maintenance.sql" />
+    <None Remove="System\Migrations\Initial\Extensions\Initial_CreateExtension_citext.sql" />
+    <None Remove="System\Migrations\Initial\Extensions\Initial_CreateExtension_uuid-ossp.sql" />
+    <None Remove="System\Migrations\Migration_v_0_0_1\v_0_0_1_AlterTable_User.sql" />
+    <None Remove="System\Migrations\Migration_v_0_0_1\v_0_0_1_CreateTable_User.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="System\Migrations\Initial\Database\Initial_Maintenance.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Initial\Extensions\Initial_CreateExtension_citext.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Initial\Extensions\Initial_CreateExtension_uuid-ossp.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\v_0_0_1_AlterTable_User.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\v_0_0_1_CreateTable_User.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="FluentMigrator" Version="3.2.7" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.7" />
+    <PackageReference Include="FluentMigrator.Runner.Postgres" Version="3.2.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
@@ -18,7 +47,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="DIModule\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Project.Common\Project.Common.csproj" />
   </ItemGroup>
 
 </Project>

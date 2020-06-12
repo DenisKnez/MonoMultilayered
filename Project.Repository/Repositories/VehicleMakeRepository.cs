@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project.DAL.Context;
+using Project.DAL;
 using Project.DAL.DomainModels;
 using Project.DAL.IDomainModels;
 using Project.Repository.Common.Repositories;

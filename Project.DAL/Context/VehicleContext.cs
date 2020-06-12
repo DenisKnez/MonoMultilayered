@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project.DAL.Context
+namespace Project.DAL
 {
     public class VehicleContext : DbContext, IDbContext
     {
