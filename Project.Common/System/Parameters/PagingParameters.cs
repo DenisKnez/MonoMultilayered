@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project.DAL.EntityModels
+namespace Project.Common.System
 {
-    public interface IUserEntity : IBaseEntity
+    public class PagingParameters
     {
+
 
     }
 }

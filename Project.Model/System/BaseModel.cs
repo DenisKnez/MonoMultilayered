@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Project.Model.Common.System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project.DAL
+namespace Project.Model.System
 {
-    public class BaseEntity : IBaseEntity
+    public class BaseModel : IBaseModel
     {
         public Guid Id { get; set; }
 
@@ -12,6 +13,6 @@ namespace Project.DAL
 
         public DateTime DateUpdated { get; set; }
 
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

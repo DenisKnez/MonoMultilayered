@@ -11,27 +11,34 @@ using System.Threading.Tasks;
 
 namespace Project.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IBaseEntity
     {
-        private readonly IUnitOfWork UnitOfWork;
+        private IUnitOfWork UnitOfWork { get; set; }
 
         public Repository(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
+            //DbSet = unitOfWork.Context.Set<TEntity>();
         }
 
-        public void Add(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            UnitOfWork.Context.Set<TEntity>().Add(entity);
+            Initialize(entity);
+            await UnitOfWork.Context.Set<TEntity>().AddAsync(entity);
+        }
+
+        public void Initialize(TEntity entity)
+        {
+            entity.IsActive = true;
         }
 
         public async Task Delete(TEntity entity)
         {
-            TEntity existing = await  UnitOfWork.Context.Set<TEntity>().FindAsync(entity);
+            TEntity existing = await UnitOfWork.Context.Set<TEntity>().FindAsync(entity);
             if (existing != null) UnitOfWork.Context.Set<TEntity>().Remove(existing);
         }
 
-        public async Task<TEntity> GetAsync (Guid id)
+        public async Task<TEntity> GetAsync(Guid id)
         {
             return await UnitOfWork.Context.Set<TEntity>().SingleOrDefaultAsync(x => x.Id == id);
         }

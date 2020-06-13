@@ -22,6 +22,7 @@ using Ninject;
 using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Project.DAL;
+using Project.DAL.Context;
 using Project.MVC.Ninject;
 using Project.Repository;
 using Project.Service;
@@ -60,12 +61,12 @@ namespace Project.WebAPI
 
             services.AddControllers();
             services.AddFluentMigratorCore();
-            services.ConfigureRunner(rb =>
-                rb.AddPostgres()
-                    .WithGlobalConnectionString(Configuration.GetConnectionString("PostgreDatabase"))
-                    .ScanIn(Assembly.Load(Assembly.GetAssembly(typeof(DatabaseContext)).GetName()))
-                    .For.Migrations()
-                    .For.EmbeddedResources());
+            //services.ConfigureRunner(rb =>
+            //    rb.AddPostgres()
+            //        .WithGlobalConnectionString(Configuration.GetConnectionString("PostgreDatabase"))
+            //        .ScanIn(Assembly.Load(Assembly.GetAssembly(typeof(DatabaseContext)).GetName()))
+            //        .For.Migrations()
+            //        .For.EmbeddedResources());
 
             services.AddLogging(lb => lb.AddFluentMigratorConsole());
 

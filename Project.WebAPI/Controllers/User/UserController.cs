@@ -5,12 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Project.WebAPI.System;
+using Project.Common.System;
+using Project.Model;
 
 namespace Project.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
-    public class UserController
+    public class UserController : ControllerBase
     {
         public UserController(IMapper mapper, IUserService userService)
         {
@@ -22,14 +26,92 @@ namespace Project.WebAPI.Controllers
         public IUserService UserService { get; }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(Guid id)
+        public async Task<IActionResult> GetUserAsync(Guid id)
         {
-            //UserService
+            var user = await UserService.GetUserAsync(id);
 
+            if (user != null)
+            {
+                var restUser = Mapper.Map<UserRestModel>(user);
+                return Ok(restUser);
+
+            }
+            else
+            {
+                return NotFound("The user was not found");
+            }
+
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers([FromQuery]PagingParameters pagingParameters, [FromQuery]SortingParameters sortingParameters)
+        {
+            //var user = await UserService.GetUserAsync(id);
+
+            //if (user != null)
+            //{
+            //    var restUser = Mapper.Map<UserRestModel>(user);
+            //    return Ok(restUser);
+
+            //}
+            //else
+            //{
+            //    return NotFound("The user was not found");
+            //}
             return null;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUserAsync([FromBody]UserRestModel userRestModel)
+        {
+            var user = Mapper.Map<UserModel>(userRestModel);
+
+            await UserService.AddUserAsync(user);
+
+            if (user != null)
+            {
+                var restUser = Mapper.Map<UserRestModel>(user);
+                return Ok(restUser);
+
+            }
+            else
+            {
+                return NotFound("The user was not found");
+            }
+
+        }
+
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateUser(UserRestModel userRestModel)
+        {
+
+            //if (user != null)
+            //{
+            //    var restUser = Mapper.Map<UserRestModel>(user);
+            //    return Ok(restUser);
+
+            //}
+            //else
+            //{
+            //    return NotFound("The user was not found");
+            //}
+
+            return null;
+
+        }
+
+
+    }
+
+
+    public class UserRestModel : BaseRestModel
+    {
+        public string Name { get; set; }
 
 
 
     }
+
 }

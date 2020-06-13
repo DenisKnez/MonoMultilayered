@@ -1,11 +1,13 @@
 ﻿using Project.DAL;
+using Project.DAL.Context;
+using System.Threading.Tasks;
 
 namespace Project.Repository.Common
 {
     public interface IUnitOfWork
     {
         DatabaseContext Context { get; set; }
-        void CommitAsync();
-        void RollBackAsync();
+        Task CommitAsync();
+        Task RollBackAsync();
     }
 }

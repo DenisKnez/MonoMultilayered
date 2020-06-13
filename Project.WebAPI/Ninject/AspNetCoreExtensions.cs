@@ -33,7 +33,7 @@ namespace Project.MVC.Ninject
                     RequestScopingStartupFilter(requestScopeProvider));
 
 
-            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
+            //services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
             services.AddAutoMapper(typeof(Startup));
 

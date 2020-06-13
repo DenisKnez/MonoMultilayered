@@ -10,8 +10,7 @@ namespace Project.Service
     {
         public override void Load()
         {
-            //Kernel.Bind<IVehicleMakeService>().To<VehicleMakeService>();
-            //Kernel.Bind<IVehicleModelService>().To<VehicleModelService>();
+            Kernel.Bind<IUserService>().To<UserService>();
         }
     }
 }
