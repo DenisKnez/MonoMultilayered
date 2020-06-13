@@ -13,19 +13,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Model", "Project.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Common", "Project.Common\Project.Common.csproj", "{59DA49EA-696B-46D8-8AF1-16DAF340439F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.DAL", "Project.DAL\Project.DAL.csproj", "{39C1EC82-2CB3-49F2-BE77-58FB8A6291EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.DAL", "Project.DAL\Project.DAL.csproj", "{39C1EC82-2CB3-49F2-BE77-58FB8A6291EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Model.Common", "Project.Model.Common\Project.Model.Common.csproj", "{08F4C788-E894-4CBE-AC46-5148BEC8500D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Model.Common", "Project.Model.Common\Project.Model.Common.csproj", "{08F4C788-E894-4CBE-AC46-5148BEC8500D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Repository.Common", "Project.Repository.Common\Project.Repository.Common.csproj", "{EC58C7EF-F9E1-4E12-8941-5D092ACAF09F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Repository.Common", "Project.Repository.Common\Project.Repository.Common.csproj", "{EC58C7EF-F9E1-4E12-8941-5D092ACAF09F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Service.Common", "Project.Service.Common\Project.Service.Common.csproj", "{25B77D78-4F4F-4281-BC50-07C62584A335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Service.Common", "Project.Service.Common\Project.Service.Common.csproj", "{25B77D78-4F4F-4281-BC50-07C62584A335}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Service.Tests", "Project.Service.Tests\Project.Service.Tests.csproj", "{65612314-3594-4B9F-831D-E183A963264B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Service.Tests", "Project.Service.Tests\Project.Service.Tests.csproj", "{65612314-3594-4B9F-831D-E183A963264B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Repository.Tests", "Project.Repository.Tests\Project.Repository.Tests.csproj", "{4A2B4716-015E-4DB6-8401-42D7F96DE1AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Repository.Tests", "Project.Repository.Tests\Project.Repository.Tests.csproj", "{4A2B4716-015E-4DB6-8401-42D7F96DE1AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.WebAPI.Tests", "Project.WebAPI.Tests\Project.WebAPI.Tests.csproj", "{5053CEEF-96FE-4871-9A09-5E33DA469C0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.WebAPI.Tests", "Project.WebAPI.Tests\Project.WebAPI.Tests.csproj", "{5053CEEF-96FE-4871-9A09-5E33DA469C0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

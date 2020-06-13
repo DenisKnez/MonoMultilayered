@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Project.DAL.Context;
+using Project.DAL;
 using Project.WebAPI;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace Project.MVC.Ninject
                     RequestScopingStartupFilter(requestScopeProvider));
 
 
-            services.AddDbContext<VehicleContext>(options => options.UseNpgsql(connectionString));
+            //services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
             services.AddAutoMapper(typeof(Startup));
 

@@ -1,0 +1,1 @@
+insert into "User" ("Name", "DateCreated", "DateUpdated", "IsActive" ) values ('Marko', now(), now(), true)

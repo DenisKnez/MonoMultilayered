@@ -1,0 +1,1 @@
+Scaffold-DbContext "Server=192.168.1.5;Port=5432;User ID=postgres;Password=denis;Database=monotest;" -OutputDir EntityModels -Context DatabaseContext -ContextDir Context -Force -Provider Npgsql.EntityFrameworkCore.PostgreSQL

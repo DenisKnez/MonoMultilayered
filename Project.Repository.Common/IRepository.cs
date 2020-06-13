@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 
 namespace Project.Repository.Common
 {
-    public interface IRepository<TEntity>
+    public interface IRepository<TEntity> where TEntity : class, IBaseEntity
     {
-        Task<TEntity> GetByIdAsync(Guid id);
-        IQueryable<TEntity> Table { get; }
-        IQueryable<TEntity> TableAsNoTracking { get; }
+        Task<TEntity> GetAsync(Guid id);
+        IAsyncEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        Task AddAsync(TEntity entity);
+        Task Delete(TEntity entity);
+        void Update(TEntity entity);
+
     }
 }

@@ -1,7 +1,4 @@
-﻿using Project.DAL.IDomainModels;
-using Project.Model.Common;
-using Project.Model.Common.IVehicleMakeDomainModels;
-using Project.Model.VehicleMakeDomainModels;
+﻿using Project.Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
