@@ -7,7 +7,7 @@ namespace Project.Repository.Common
     public interface IUnitOfWork
     {
         DatabaseContext Context { get; set; }
-        Task CommitAsync();
+        Task<int> CommitAsync();
         Task RollBackAsync();
     }
 }

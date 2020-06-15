@@ -21,10 +21,9 @@ namespace Project.Repository
             Context = context;
         }
 
-        public async Task CommitAsync()
+        public async Task<int> CommitAsync()
         {
-            int numberOfChanges = await Context.SaveChangesAsync();
-            Debug.WriteLine("Number of changes: " + numberOfChanges);
+            return await Context.SaveChangesAsync();
         }
 
         public async Task RollBackAsync()

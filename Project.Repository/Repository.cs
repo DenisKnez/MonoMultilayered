@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.DAL;
+using Project.DAL.EntityModels;
 using Project.Repository.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Repository
@@ -15,27 +14,55 @@ namespace Project.Repository
     {
         private IUnitOfWork UnitOfWork { get; set; }
 
+        private readonly string IsActivePropertyName = "IsActive";
+
         public Repository(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
             //DbSet = unitOfWork.Context.Set<TEntity>();
         }
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             Initialize(entity);
             await UnitOfWork.Context.Set<TEntity>().AddAsync(entity);
+            return entity;
         }
 
-        public void Initialize(TEntity entity)
+        protected void Initialize(TEntity entity)
         {
             entity.IsActive = true;
+            entity.DateUpdated = DateTime.Now;
+            InitializeDateUpdated(entity);
         }
 
-        public async Task Delete(TEntity entity)
+        protected void InitializeDateUpdated(TEntity entity)
         {
-            TEntity existing = await UnitOfWork.Context.Set<TEntity>().FindAsync(entity);
-            if (existing != null) UnitOfWork.Context.Set<TEntity>().Remove(existing);
+            entity.DateUpdated = DateTime.UtcNow;
+        }
+
+        public async Task DeactivateAsync(Guid id)
+        {
+            var entity = await UnitOfWork.Context.Set<TEntity>().FindAsync(id);
+
+            entity.IsActive = false;
+
+            if (entity != null)
+            {
+                UnitOfWork.Context.Set<TEntity>().Attach(entity);
+                UnitOfWork.Context.Update(entity);
+            }
+        }
+
+        public async Task Delete(Guid id)
+        {
+            TEntity entity = await UnitOfWork.Context.Set<TEntity>().FindAsync(id);
+            if (entity != null) UnitOfWork.Context.Set<TEntity>().Remove(entity);
+        }
+
+        public async Task<TEntity> GetAsyncNoTracking(Guid id)
+        {
+            return await UnitOfWork.Context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<TEntity> GetAsync(Guid id)
@@ -48,10 +75,12 @@ namespace Project.Repository
             return UnitOfWork.Context.Set<TEntity>().Where(predicate).AsAsyncEnumerable();
         }
 
-        public void Update(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
-            UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+            InitializeDateUpdated(entity);
             UnitOfWork.Context.Set<TEntity>().Attach(entity);
+            UnitOfWork.Context.Update(entity);
+            return entity;
         }
     }
 }

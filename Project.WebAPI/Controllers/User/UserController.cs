@@ -47,18 +47,7 @@ namespace Project.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery]PagingParameters pagingParameters, [FromQuery]SortingParameters sortingParameters)
         {
-            //var user = await UserService.GetUserAsync(id);
 
-            //if (user != null)
-            //{
-            //    var restUser = Mapper.Map<UserRestModel>(user);
-            //    return Ok(restUser);
-
-            //}
-            //else
-            //{
-            //    return NotFound("The user was not found");
-            //}
             return null;
         }
 
@@ -83,27 +72,56 @@ namespace Project.WebAPI.Controllers
         }
 
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdateUser(UserRestModel userRestModel)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromBody]UserRestModel userRestModel)
         {
+            var user = await UserService.GetUserNoTrackingAsync(userRestModel.Id);
 
-            //if (user != null)
-            //{
-            //    var restUser = Mapper.Map<UserRestModel>(user);
-            //    return Ok(restUser);
+            var userModel = Mapper.Map<UserModel>(userRestModel);
 
-            //}
-            //else
-            //{
-            //    return NotFound("The user was not found");
-            //}
+            var anotherUser = Mapper.Map(userModel, user);
 
-            return null;
+            await UserService.UpdateUserAsync(anotherUser);
+
+            if (user != null)
+            {
+                var restUser = Mapper.Map<UserRestModel>(user);
+                return Ok(restUser);
+
+            }
+            else
+            {
+                return NotFound("The user was not found");
+            }
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeactivateUser(Guid id)
+        {
+            int numberOfChanges = await UserService.DeactivateUserAsync(id);
+
+            if (numberOfChanges > 1)
+            {
+                return Ok("The user was deactivated");
+            }
+            else
+            {
+                return NotFound("The user was not found");
+            }
 
         }
 
 
+        [HttpDelete("delete/{id}")]
+        public async Task DeleteUser(Guid id)
+        {
+            await UserService.DeleteUserAsync(id);
+        }
+
+
     }
+
 
 
     public class UserRestModel : BaseRestModel
