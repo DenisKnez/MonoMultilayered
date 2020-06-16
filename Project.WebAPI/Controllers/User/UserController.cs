@@ -48,10 +48,10 @@ namespace Project.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters)
         {
-            await UserService.FindUsersAsync(userParameters);
+            var users = await UserService.FindUsersAsync(userParameters);
 
 
-            return null;
+            return Ok(users);
         }
 
         [HttpPost]
