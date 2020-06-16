@@ -15,8 +15,8 @@ namespace Project.Repository.Common
     {
         Task<TEntity> GetAsync(Guid id);
         Task<TEntity> GetAsyncNoTracking(Guid id);
-        Task<PagedList<TEntity>> FindAsyncNoTracking(Parameters parameters);
-        Task<IEnumerable<TEntity>> FindAsync(Parameters parameters);
+        Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters>(TParameters parameters) where TParameters : IParameters;
+        Task<IPagedList<TEntity>> FindAsync<TParameters>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters;
         Task<TEntity> AddAsync(TEntity entity);
         Task Delete(Guid id);
         TEntity Update(TEntity entity);
