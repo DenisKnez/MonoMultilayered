@@ -16,7 +16,7 @@ namespace Project.Repository.AutoMapper
             CreateMap<UserEntity, UserModel>();
             CreateMap<UserModel, UserEntity>();
 
-            CreateMap<PagedList<UserModel>, PagedList<UserEntity>>().ConvertUsing<PagedListConverter<UserModel, UserEntity>>();
+            CreateMap<PagedList<UserEntity>, PagedList<UserModel>>().ConvertUsing<PagedListConverter<UserEntity, UserModel>>();
 
 
 
