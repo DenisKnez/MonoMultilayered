@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Project.WebAPI.System;
 using Project.Common.System;
 using Project.Model;
+using Project.Common.Application;
 
 namespace Project.WebAPI.Controllers
 {
@@ -28,7 +29,7 @@ namespace Project.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserAsync(Guid id)
         {
-            var user = await UserService.GetUserAsync(id);
+            var user = await UserService.GetUserNoTrackingAsync(id);
 
             if (user != null)
             {
@@ -45,8 +46,10 @@ namespace Project.WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery]PagingParameters pagingParameters, [FromQuery]SortingParameters sortingParameters)
+        public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters)
         {
+            await UserService.FindUsersAsync(userParameters);
+
 
             return null;
         }

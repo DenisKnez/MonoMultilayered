@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Project.Common.Application;
+using Project.Common.System;
 using Project.DAL;
 using Project.DAL.EntityModels;
 using Project.Repository.Common;
@@ -14,20 +16,19 @@ namespace Project.Repository
     {
         private IUnitOfWork UnitOfWork { get; set; }
 
-        private readonly string IsActivePropertyName = "IsActive";
-
         public Repository(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
-            //DbSet = unitOfWork.Context.Set<TEntity>();
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             Initialize(entity);
             await UnitOfWork.Context.Set<TEntity>().AddAsync(entity);
             return entity;
         }
+
+        #region Entity Setup Methods
 
         protected void Initialize(TEntity entity)
         {
@@ -41,7 +42,10 @@ namespace Project.Repository
             entity.DateUpdated = DateTime.UtcNow;
         }
 
-        public async Task DeactivateAsync(Guid id)
+        #endregion
+
+
+        public virtual async Task DeactivateAsync(Guid id)
         {
             var entity = await UnitOfWork.Context.Set<TEntity>().FindAsync(id);
 
@@ -54,28 +58,38 @@ namespace Project.Repository
             }
         }
 
-        public async Task Delete(Guid id)
+        public virtual async Task Delete(Guid id)
         {
             TEntity entity = await UnitOfWork.Context.Set<TEntity>().FindAsync(id);
             if (entity != null) UnitOfWork.Context.Set<TEntity>().Remove(entity);
         }
 
-        public async Task<TEntity> GetAsyncNoTracking(Guid id)
+        public virtual async Task<PagedList<TEntity>> FindAsyncNoTracking(Parameters parameters)
+        {
+            return await PagedList<TEntity>.ToPagedListAsync(UnitOfWork.Context.Set<TEntity>().AsNoTracking(), parameters.PageNumber, parameters.PageSize);
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> FindAsync(Parameters parameters)
+        {
+            return await UnitOfWork.Context.Set<TEntity>().Skip((parameters.PageNumber - 1) * parameters.PageSize).Take(parameters.PageSize).ToListAsync();
+        }
+
+        public virtual async Task<TEntity> GetAsyncNoTracking(Guid id)
         {
             return await UnitOfWork.Context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<TEntity> GetAsync(Guid id)
+        public virtual async Task<TEntity> GetAsync(Guid id)
         {
             return await UnitOfWork.Context.Set<TEntity>().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public IAsyncEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public virtual IAsyncEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return UnitOfWork.Context.Set<TEntity>().Where(predicate).AsAsyncEnumerable();
         }
 
-        public TEntity Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
             InitializeDateUpdated(entity);
             UnitOfWork.Context.Set<TEntity>().Attach(entity);

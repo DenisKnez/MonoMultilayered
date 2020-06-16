@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Project.Common.Application;
+using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Model;
 using Project.Model.Common;
@@ -6,6 +8,7 @@ using Project.Repository.Common;
 using Project.Service.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,13 +36,17 @@ namespace Project.Service
             return userModel;
         }
 
-        public async Task<IUserModel> GetUserAsync(Guid id)
+        public async Task<PagedList<IUserModel>> FindUsersAsync(UserParameters userParameters)
         {
-            var user = await UserRepository.GetAsync(id);
+            userParameters.PageSize = 3;
+            userParameters.PageNumber = 2;
 
-            var userModel = Mapper.Map<UserModel>(user);
+            var users = await UserRepository.FindAsyncNoTracking(userParameters);
 
-            return userModel;
+            var m = 3;
+
+
+            return Mapper.Map<PagedList<UserEntity>, PagedList<IUserModel>>(users);
         }
 
         public async Task<IUserModel> AddUserAsync(IUserModel userModel)

@@ -1,4 +1,5 @@
-﻿using Project.DAL;
+﻿using Project.Common.Application;
+using Project.DAL;
 using Project.DAL.EntityModels;
 using Project.Repository.Common;
 using System;
@@ -13,7 +14,6 @@ namespace Project.Repository
         {
 
         }
-
 
     }
 }
