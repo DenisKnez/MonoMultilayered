@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Project.Common.Application
 {
-    public class UserParameters : Parameters
+    public class UserParameters : Parameters, IUserParameters
     {
-
+        public string Name { get; set; }
 
     }
 }

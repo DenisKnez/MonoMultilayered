@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Project.Common.Application
 {
-    public class Parameters : IParameters
+    public abstract class Parameters : IParameters
     {
         protected int maxPageSize = 50;
         public virtual int PageNumber { get; set; } = 1;
@@ -21,6 +21,22 @@ namespace Project.Common.Application
                 pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+
+        public string OrderBy { get; set; }
+
+
+        #region Filters
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateUpdated { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public Guid Id { get; set; }
+
+        #endregion
+
 
     }
 }
