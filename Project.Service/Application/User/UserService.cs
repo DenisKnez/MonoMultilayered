@@ -36,17 +36,14 @@ namespace Project.Service
             return userModel;
         }
 
-        public async Task<PagedList<IUserModel>> FindUsersAsync(UserParameters userParameters)
+        public async Task<IPagedList<UserModel>> FindUsersAsync(UserParameters userParameters)
         {
-            userParameters.PageSize = 3;
-            userParameters.PageNumber = 2;
 
-            var users = await UserRepository.FindAsyncNoTracking(userParameters);
-
-            var m = 3;
+            var users = await UserRepository.FindUserAsync(userParameters);
 
 
-            return Mapper.Map<PagedList<UserEntity>, PagedList<IUserModel>>(users);
+
+            return Mapper.Map<PagedList<UserEntity>, PagedList<UserModel>>((PagedList<UserEntity>)users);
         }
 
         public async Task<IUserModel> AddUserAsync(IUserModel userModel)
