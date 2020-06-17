@@ -108,7 +108,7 @@ namespace Project.Repository
             return entity;
         }
 
-        public void InitializeFilter<TParameters>(ref IQueryable<TEntity> query, TParameters parameters) where TParameters : IParameters
+        public void InitializeBaseFilter<TParameters>(ref IQueryable<TEntity> query, TParameters parameters) where TParameters : IParameters
         {
             if(parameters.IsActive)
             {
@@ -131,7 +131,6 @@ namespace Project.Repository
 
             if (string.IsNullOrWhiteSpace(orderByQueryString))
             {
-                query = query.OrderBy(entity => entity.Id);
                 return;
             }
 
@@ -162,13 +161,6 @@ namespace Project.Repository
             }
 
             var orderQuery = orderQueryBuilder.ToString().TrimEnd(',', ' ');
-
-
-            if (string.IsNullOrWhiteSpace(orderQuery))
-            {
-                query = query.OrderBy(x => x.Id);
-                return;
-            }
 
             query = query.OrderBy(orderQuery);
 

@@ -50,7 +50,6 @@ namespace Project.WebAPI.Controllers
         {
             var users = await UserService.FindUsersAsync(userParameters);
 
-
             return Ok(users);
         }
 
