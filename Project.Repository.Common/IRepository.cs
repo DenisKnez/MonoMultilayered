@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Project.Common.Application;
+using Project.Common.System;
 using Project.DAL;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,8 @@ namespace Project.Repository.Common
     {
         Task<TEntity> GetAsync(Guid id);
         Task<TEntity> GetAsyncNoTracking(Guid id);
-        IAsyncEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters>(TParameters parameters) where TParameters : IParameters;
+        Task<IPagedList<TEntity>> FindAsync<TParameters>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters;
         Task<TEntity> AddAsync(TEntity entity);
         Task Delete(Guid id);
         TEntity Update(TEntity entity);
