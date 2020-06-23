@@ -14,16 +14,16 @@ using System.Linq.Dynamic.Core;
 
 namespace Project.Repository
 {
-    public class UserRepository : Repository<UserEntity>, IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         public UserRepository(IUnitOfWork uow) : base(uow)
         {
 
         }
 
-        public Task<IPagedList<UserEntity>> FindUserAsync(UserParameters parameters)
+        public Task<IPagedList<User>> FindUserAsync(UserParameters parameters)
         {
-            IQueryable<UserEntity> query = UnitOfWork.Context.Set<UserEntity>();
+            IQueryable<User> query = UnitOfWork.Context.Set<User>();
 
             InitializeFilter(ref query, parameters);
             InitializeSorting(ref query, parameters.OrderBy);
@@ -32,7 +32,7 @@ namespace Project.Repository
         }
 
 
-        public void InitializeFilter(ref IQueryable<UserEntity> query, UserParameters parameters)
+        public void InitializeFilter(ref IQueryable<User> query, UserParameters parameters)
         {
 
             if (string.IsNullOrWhiteSpace(parameters.Name))

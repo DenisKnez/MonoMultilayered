@@ -8,7 +8,9 @@
     <None Remove="System\Migrations\Initial\Database\Initial_Maintenance.sql" />
     <None Remove="System\Migrations\Initial\Extensions\Initial_CreateExtension_citext.sql" />
     <None Remove="System\Migrations\Initial\Extensions\Initial_CreateExtension_uuid-ossp.sql" />
-    <None Remove="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_AlterTable_User_2.sql" />
+    <None Remove="System\Migrations\Migration_v_0_0_1\Company\v_0_0_1_Mig_105_CreateTable_Company.sql" />
+    <None Remove="System\Migrations\Migration_v_0_0_1\Lookup\v_0_0_1_Mig_104_CreateLookup_CompanyType.sql" />
+    <None Remove="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_103_AlterTable_User.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\v_0_0_1_AlterTable_User.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\v_0_0_1_CreateTable_User.sql" />
   </ItemGroup>
@@ -23,13 +25,19 @@
     <EmbeddedResource Include="System\Migrations\Initial\Extensions\Initial_CreateExtension_uuid-ossp.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_AlterTable_User_2.sql">
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\Company\v_0_0_1_Mig_105_CreateTable_Company.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_AlterTable_User.sql">
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\Lookup\v_0_0_1_Mig_104_CreateLookup_CompanyType.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_CreateTable_User.sql">
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_103_AlterTable_User.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_102_AlterTable_User.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_101_CreateTable_User.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -53,7 +61,8 @@
   <ItemGroup>
     <Folder Include="Context\" />
     <Folder Include="DIModule\" />
-    <Folder Include="System\Migrations\Migration_v_0_0_1\Company\" />
+    <Folder Include="Models\" />
+    <Folder Include="System\Migrations\Utilities\" />
   </ItemGroup>
 
   <ItemGroup>

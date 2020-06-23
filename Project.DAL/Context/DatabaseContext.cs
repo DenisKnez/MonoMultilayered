@@ -16,8 +16,7 @@ namespace Project.DAL.Context
         {
         }
 
-        public virtual DbSet<Log> Log { get; set; }
-        public virtual DbSet<UserEntity> User { get; set; }
+        public virtual DbSet<User> User { get; set; }
         public virtual DbSet<VersionInfo> VersionInfo { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,24 +32,33 @@ namespace Project.DAL.Context
             modelBuilder.HasPostgresExtension("citext")
                 .HasPostgresExtension("uuid-ossp");
 
-            modelBuilder.Entity<Log>(entity =>
-            {
-                entity.Property(e => e.Text).IsRequired();
-            });
-
-            modelBuilder.Entity<UserEntity>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("uuid_generate_v1()");
 
                 entity.Property(e => e.DateCreated).HasDefaultValueSql("now()");
 
+                entity.Property(e => e.DateJoined).HasColumnType("date");
+
+                entity.Property(e => e.DateOfBirth).HasColumnType("date");
+
                 entity.Property(e => e.DateUpdated).HasDefaultValueSql("now()");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnType("citext");
 
                 entity.Property(e => e.IsActive)
                     .IsRequired()
                     .HasDefaultValueSql("true");
 
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasColumnType("citext");
+
                 entity.Property(e => e.Name).IsRequired();
+
+                entity.Property(e => e.Salary).HasColumnType("numeric(11,2)");
             });
 
             modelBuilder.Entity<VersionInfo>(entity =>

@@ -9,7 +9,7 @@ namespace Project.DAL.System
     /// Alter user table
     /// </summary>
     [Migration(102, "Add DateCreated, DateUpdated, isActive to user table")]
-    public class v_0_0_1_AlterTable_User : Migration
+    public class v_0_0_1_Mig_102_AlterTable_User : Migration
     {
         public override void Down()
         {
@@ -18,7 +18,7 @@ namespace Project.DAL.System
 
         public override void Up()
         {
-            Execute.EmbeddedScript("v_0_0_1_AlterTable_User.sql");
+            Execute.EmbeddedScript("v_0_0_1_Mig_102_AlterTable_User.sql");
         }
     }
 }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Project.Repository.Common
 {
-    public interface IUserRepository : IRepository<UserEntity>
+    public interface IUserRepository : IRepository<User>
     {
-        Task<IPagedList<UserEntity>> FindUserAsync(UserParameters parameters);
+        Task<IPagedList<User>> FindUserAsync(UserParameters parameters);
     }
 }

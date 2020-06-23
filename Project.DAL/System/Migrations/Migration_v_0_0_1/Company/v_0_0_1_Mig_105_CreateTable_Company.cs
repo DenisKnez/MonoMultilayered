@@ -6,10 +6,10 @@ using System.Text;
 namespace Project.DAL.System
 {
     /// <summary>
-    /// Alter user table
+    /// Create company table
     /// </summary>
-    [Migration(103, "added email, dateJoined, dateOfBirth, Salary")]
-    public class v_0_0_1_AlterTable_User_2 : Migration
+    [Migration(105, "Create company table")]
+    public class v_0_0_1_Mig_105_CreateTable_Company : Migration
     {
         public override void Down()
         {
@@ -18,7 +18,7 @@ namespace Project.DAL.System
 
         public override void Up()
         {
-            Execute.EmbeddedScript("v_0_0_1_AlterTable_User_2.sql");
+            Execute.EmbeddedScript("v_0_0_1_Mig_105_CreateTable_Company.sql");
         }
     }
 }

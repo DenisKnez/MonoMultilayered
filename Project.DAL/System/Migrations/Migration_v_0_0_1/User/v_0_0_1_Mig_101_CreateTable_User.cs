@@ -9,7 +9,7 @@ namespace Project.DAL.System
     /// Create user table
     /// </summary>
     [Migration(101, "Create user table")]
-    public class v_0_0_1_CreateTable_User : Migration
+    public class v_0_0_1_Mig_101_CreateTable_User : Migration
     {
         public override void Down()
         {
@@ -18,7 +18,7 @@ namespace Project.DAL.System
 
         public override void Up()
         {
-            Execute.EmbeddedScript("v_0_0_1_CreateTable_User.sql");
+            Execute.EmbeddedScript("v_0_0_1_Mig_101_CreateTable_User.sql");
         }
     }
 }

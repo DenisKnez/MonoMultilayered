@@ -27,14 +27,17 @@ namespace Project.WebAPI.Controllers
         public IUserService UserService { get; }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserAsync(Guid id)
+        public async Task<IActionResult> GetUserAsync(Guid id, string fields = "")
         {
             var user = await UserService.GetUserNoTrackingAsync(id);
 
             if (user != null)
             {
-                var restUser = Mapper.Map<UserRestModel>(user);
-                return Ok(restUser);
+                UserRestModel restUser = Mapper.Map<UserRestModel>(user);
+                DataShaper<UserRestModel> m = new DataShaper<UserRestModel>();
+                var expObj = m.ShapeData(restUser, fields);
+
+                return Ok(expObj);
 
             }
             else
@@ -50,7 +53,10 @@ namespace Project.WebAPI.Controllers
         {
             var users = await UserService.FindUsersAsync(userParameters);
 
-            return Ok(users);
+
+            var restUsers = Mapper.Map<UserRestModel>(users);
+
+            return Ok(restUsers);
         }
 
         [HttpPost]

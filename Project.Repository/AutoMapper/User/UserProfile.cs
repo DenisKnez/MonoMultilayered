@@ -13,10 +13,10 @@ namespace Project.Repository.AutoMapper
     {
         public UserProfile()
         {
-            CreateMap<UserEntity, UserModel>();
-            CreateMap<UserModel, UserEntity>();
+            CreateMap<User, UserModel>();
+            CreateMap<UserModel, User>();
 
-            CreateMap<PagedList<UserEntity>, PagedList<UserModel>>().ConvertUsing<PagedListConverter<UserEntity, UserModel>>();
+            CreateMap<PagedList<User>, PagedList<UserModel>>().ConvertUsing<PagedListConverter<User, UserModel>>();
 
 
 

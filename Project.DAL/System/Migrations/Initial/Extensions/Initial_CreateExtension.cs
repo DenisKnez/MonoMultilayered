@@ -8,7 +8,7 @@ namespace Project.DAL.System
     /// <summary>
     /// Create citext and uuid-opps extensions
     /// </summary>
-    [Migration(3, "Create citext and uuid-opps extensions")]
+    [Migration(1, "Create citext and uuid-opps extensions")]
     public class Initial_CreateExtension : Migration
     {
         public override void Down()

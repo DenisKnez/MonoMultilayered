@@ -59,7 +59,7 @@ namespace Project.WebAPI
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddFluentMigratorCore();
             services.ConfigureRunner(rb =>
                 rb.AddPostgres()

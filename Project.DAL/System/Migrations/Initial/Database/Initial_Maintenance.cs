@@ -42,6 +42,8 @@ namespace Project.DAL.System
         private async Task CreateDatabaseAsync()
         {
             ConnectionStringManager conStrManager = new ConnectionStringManager(ConnectionString);
+
+            // connection string to connect to a database machine, and not a particular database so it can be created if it does not exist
             string connectionString = RemoveDbNameFromConnectionString(ConnectionString);
 
 

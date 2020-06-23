@@ -43,12 +43,12 @@ namespace Project.Service
 
 
 
-            return Mapper.Map<PagedList<UserEntity>, PagedList<UserModel>>((PagedList<UserEntity>)users);
+            return Mapper.Map<PagedList<User>, PagedList<UserModel>>((PagedList<User>)users);
         }
 
         public async Task<IUserModel> AddUserAsync(IUserModel userModel)
         {
-            var user = Mapper.Map<UserEntity>(userModel);
+            var user = Mapper.Map<User>(userModel);
 
             var addedUser = await UserRepository.AddAsync(user);
             await UnitOfWork.CommitAsync();
@@ -58,7 +58,7 @@ namespace Project.Service
 
         public async Task<IUserModel> UpdateUserAsync(IUserModel userModel)
         {
-            var user = Mapper.Map<UserEntity>(userModel);
+            var user = Mapper.Map<User>(userModel);
             var updatedUser = UserRepository.Update(user);
             await UnitOfWork.CommitAsync();
             return Mapper.Map<UserModel>(updatedUser);
