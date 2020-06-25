@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Text;
 
-namespace Project.Common.Application
+namespace Project.WebAPI.System
 {
     public interface IDataShaper<T>
     {

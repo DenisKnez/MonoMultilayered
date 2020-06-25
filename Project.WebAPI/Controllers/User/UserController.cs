@@ -10,6 +10,7 @@ using Project.WebAPI.System;
 using Project.Common.System;
 using Project.Model;
 using Project.Common.Application;
+using Newtonsoft.Json;
 
 namespace Project.WebAPI.Controllers
 {
@@ -17,10 +18,13 @@ namespace Project.WebAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        public DataShaper<UserRestModel> DataShaper { get; set; }
+
         public UserController(IMapper mapper, IUserService userService)
         {
             Mapper = mapper;
             UserService = userService;
+            DataShaper = new DataShaper<UserRestModel>();
         }
 
         public IMapper Mapper { get; }
@@ -34,10 +38,8 @@ namespace Project.WebAPI.Controllers
             if (user != null)
             {
                 UserRestModel restUser = Mapper.Map<UserRestModel>(user);
-                DataShaper<UserRestModel> m = new DataShaper<UserRestModel>();
-                var expObj = m.ShapeData(restUser, fields);
 
-                return Ok(expObj);
+                return Ok(DataShaper.ShapeData(restUser, fields));
 
             }
             else
@@ -49,14 +51,13 @@ namespace Project.WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters)
+        public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters, string fields = "")
         {
             var users = await UserService.FindUsersAsync(userParameters);
 
+            var restUsers = Mapper.Map<PagedList<UserRestModel>>(users);
 
-            var restUsers = Mapper.Map<UserRestModel>(users);
-
-            return Ok(restUsers);
+            return Ok(DataShaper.ShapeData(restUsers, fields));
         }
 
         [HttpPost]

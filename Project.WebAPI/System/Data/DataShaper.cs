@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Project.WebAPI.System;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Project.Common.Application
+namespace Project.WebAPI.System
 {
-    public class DataShaper<T> : IDataShaper<T>
+    public class DataShaper<T> : IDataShaper<T> where T : IBaseRestModel
     {
         public PropertyInfo[] Properties { get; set; }
 
@@ -49,9 +50,7 @@ namespace Project.Common.Application
                     }
 
                     requiredProperties.Add(property);
-
                 }
-
             }
             else
             {

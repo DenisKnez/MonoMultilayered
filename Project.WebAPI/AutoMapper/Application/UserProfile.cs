@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Project.Common.System;
 using Project.Model;
+using Project.WebAPI.AutoMapper.System;
 using Project.WebAPI.Controllers;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,8 @@ namespace Project.WebAPI.AutoMapper
                 .ForMember(source => source.DateUpdated, dest => dest.Ignore())
                 .ForMember(source => source.IsActive, dest => dest.Ignore());
 
+
+            CreateMap<PagedList<UserModel>, PagedList<UserRestModel>>().ConvertUsing<PagedListConverter<UserModel, UserRestModel>>();
 
         }
 

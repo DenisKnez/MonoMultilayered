@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Project.WebAPI.System
 {
-    public class BaseRestModel
+    public class BaseRestModel : IBaseRestModel
     {
         public Guid Id { get; set; }
 
