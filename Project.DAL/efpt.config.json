@@ -1,0 +1,39 @@
+﻿{
+   "ContextClassName": "DatabaseContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Context",
+   "OutputPath": "EntityModels",
+   "ProjectRootNamespace": "Project.DAL",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "public.Company"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "public.CompanyType"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "public.User"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "public.VersionInfo"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseSpatial": false
+}
