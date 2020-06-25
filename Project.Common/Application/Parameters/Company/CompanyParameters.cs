@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Project.Common
 {
-    public class UserParameters : Parameters, IUserParameters
+    public class CompanyParameters : Parameters, ICompanyParameters
     {
         public string Name { get; set; }
 

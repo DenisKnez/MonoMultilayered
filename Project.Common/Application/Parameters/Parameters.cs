@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project.Common.Application
+namespace Project.Common
 {
     public abstract class Parameters : IParameters
     {

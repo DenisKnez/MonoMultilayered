@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project.Common.Application;
+using Project.Common;
 using Project.Common.System;
 using Project.DAL;
 using System;

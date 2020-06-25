@@ -30,19 +30,14 @@ namespace Project.Service
         public async Task<IUserModel> GetUserNoTrackingAsync(Guid id)
         {
             var user = await UserRepository.GetAsyncNoTracking(id);
-
             var userModel = Mapper.Map<UserModel>(user);
 
             return userModel;
         }
 
-        public async Task<IPagedList<UserModel>> FindUsersAsync(UserParameters userParameters)
+        public async Task<IPagedList<UserModel>> FindUsersAsync(CompanyParameters userParameters)
         {
-
             var users = await UserRepository.FindUserAsync(userParameters);
-
-
-
             return Mapper.Map<PagedList<User>, PagedList<UserModel>>((PagedList<User>)users);
         }
 
@@ -76,10 +71,6 @@ namespace Project.Service
             return await UnitOfWork.CommitAsync();
 
         }
-
-
-
-
 
     }
 }

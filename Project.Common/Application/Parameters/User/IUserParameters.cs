@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project.Common.Application
+namespace Project.Common
 {
     public interface IUserParameters : IParameters
     {

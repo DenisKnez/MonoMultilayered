@@ -1,14 +1,16 @@
 ﻿using System;
 
-namespace Project.Common.Application
+namespace Project.Common
 {
     public interface IParameters
     {
-        int PageNumber { get; set; }
-        int PageSize { get; set; }
-        DateTime DateCreated { get; set; }
-        DateTime DateUpdated { get; set; }
-        bool IsActive { get; set; }
-        Guid Id { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public string OrderBy { get; set; }
+        public string Fields { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public bool IsActive { get; set; }
+        public Guid Id { get; set; }
     }
 }

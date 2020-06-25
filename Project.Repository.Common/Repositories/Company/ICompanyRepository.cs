@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Project.Repository.Common
 {
-    public interface IUserRepository : IRepository<User>
+    public interface ICompanyRepository : IRepository<Company>
     {
-        Task<IPagedList<User>> FindUserAsync(IUserParameters userParameters);
+        Task<IPagedList<Company>> FindCompanyAsync(ICompanyParameters companyParameters);
     }
 }
