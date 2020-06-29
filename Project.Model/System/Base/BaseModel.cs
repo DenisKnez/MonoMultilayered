@@ -1,9 +1,8 @@
-﻿using Project.Model.Common.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project.Model.System
+namespace Project.Model
 {
     public class BaseModel : IBaseModel
     {

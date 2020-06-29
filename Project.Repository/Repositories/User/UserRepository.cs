@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project.Common.Application;
 using Project.Common.System;
 using Project.DAL;
 using Project.DAL.EntityModels;
@@ -11,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
+using Project.Common;
 
 namespace Project.Repository
 {
@@ -21,30 +21,30 @@ namespace Project.Repository
 
         }
 
-        public Task<IPagedList<User>> FindUserAsync(UserParameters parameters)
+        public Task<IPagedList<User>> FindUserAsync(IUserParameters userParameters)
         {
             IQueryable<User> query = UnitOfWork.Context.Set<User>();
 
-            InitializeFilter(ref query, parameters);
-            InitializeSorting(ref query, parameters.OrderBy);
+            InitializeFilter(ref query, userParameters);
+            InitializeSorting(ref query, userParameters.OrderBy);
 
-            return base.FindAsync(parameters, query);
+            return base.FindAsync(userParameters, query);
         }
 
 
-        public void InitializeFilter(ref IQueryable<User> query, UserParameters parameters)
+        public void InitializeFilter(ref IQueryable<User> query, IUserParameters userParameters)
         {
 
-            if (string.IsNullOrWhiteSpace(parameters.Name))
+            if (string.IsNullOrWhiteSpace(userParameters.Name))
             {
-                query.Where(x => EF.Functions.Like(x.Name, $"%{parameters.Name}%"));
+                query.Where(x => EF.Functions.Like(x.Name, $"%{userParameters.Name}%"));
             }
-            if (parameters.DateCreated != null)
+            if (userParameters.DateCreated != null)
             {
-                query.Where(x => x.DateCreated < parameters.DateCreated);
+                query.Where(x => x.DateCreated < userParameters.DateCreated);
             }
 
-            InitializeBaseFilter(ref query, parameters);
+            InitializeBaseFilter(ref query, userParameters);
 
         }
     }

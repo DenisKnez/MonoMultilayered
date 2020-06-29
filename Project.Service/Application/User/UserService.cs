@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Project.Common.Application;
+using Project.Common;
 using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Model;
-using Project.Model.Common;
 using Project.Repository.Common;
 using Project.Service.Common;
 using System;
@@ -30,19 +29,14 @@ namespace Project.Service
         public async Task<IUserModel> GetUserNoTrackingAsync(Guid id)
         {
             var user = await UserRepository.GetAsyncNoTracking(id);
-
             var userModel = Mapper.Map<UserModel>(user);
 
             return userModel;
         }
 
-        public async Task<IPagedList<UserModel>> FindUsersAsync(UserParameters userParameters)
+        public async Task<IPagedList<UserModel>> FindUsersAsync(IUserParameters userParameters)
         {
-
             var users = await UserRepository.FindUserAsync(userParameters);
-
-
-
             return Mapper.Map<PagedList<User>, PagedList<UserModel>>((PagedList<User>)users);
         }
 
@@ -76,10 +70,6 @@ namespace Project.Service
             return await UnitOfWork.CommitAsync();
 
         }
-
-
-
-
 
     }
 }

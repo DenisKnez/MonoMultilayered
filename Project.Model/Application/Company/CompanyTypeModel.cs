@@ -1,5 +1,4 @@
-﻿using Project.Model.System;
-
+﻿
 namespace Project.Model
 {
     public class CompanyTypeModel : BaseModel, ICompanyTypeModel

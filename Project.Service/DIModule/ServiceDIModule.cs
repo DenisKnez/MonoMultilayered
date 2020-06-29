@@ -11,6 +11,7 @@ namespace Project.Service
         public override void Load()
         {
             Kernel.Bind<IUserService>().To<UserService>();
+            Kernel.Bind<ICompanyService>().To<CompanyService>();
         }
     }
 }

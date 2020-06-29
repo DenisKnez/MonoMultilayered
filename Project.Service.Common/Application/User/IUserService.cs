@@ -1,7 +1,6 @@
-﻿using Project.Common.Application;
+﻿using Project.Common;
 using Project.Common.System;
 using Project.Model;
-using Project.Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +20,7 @@ namespace Project.Service.Common
 
         Task<int> DeleteUserAsync(Guid id);
 
-        Task<IPagedList<UserModel>> FindUsersAsync(UserParameters userParameters);
+        Task<IPagedList<UserModel>> FindUsersAsync(IUserParameters userParameters);
 
     }
 }

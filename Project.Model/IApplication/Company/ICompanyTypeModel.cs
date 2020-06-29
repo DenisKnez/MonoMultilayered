@@ -1,5 +1,4 @@
-﻿using Project.Model.Common.System;
-
+﻿
 namespace Project.Model
 {
     public interface ICompanyTypeModel : IBaseModel

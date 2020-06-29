@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Project.WebAPI.System;
 using Project.Common.System;
 using Project.Model;
-using Project.Common.Application;
 using Newtonsoft.Json;
+using Project.Common;
 
-namespace Project.WebAPI.Controllers
+namespace Project.WebAPI
 {
     [Route("api/users")]
     [ApiController]
@@ -40,7 +40,6 @@ namespace Project.WebAPI.Controllers
                 UserRestModel restUser = Mapper.Map<UserRestModel>(user);
 
                 return Ok(DataShaper.ShapeData(restUser, fields));
-
             }
             else
             {
