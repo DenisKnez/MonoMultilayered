@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Project.Common.Application;
+using Project.Common;
 using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Model;
-using Project.Model.Common;
 using Project.Repository.Common;
 using Project.Service.Common;
 using System;
@@ -35,7 +34,7 @@ namespace Project.Service
             return userModel;
         }
 
-        public async Task<IPagedList<UserModel>> FindUsersAsync(CompanyParameters userParameters)
+        public async Task<IPagedList<UserModel>> FindUsersAsync(IUserParameters userParameters)
         {
             var users = await UserRepository.FindUserAsync(userParameters);
             return Mapper.Map<PagedList<User>, PagedList<UserModel>>((PagedList<User>)users);

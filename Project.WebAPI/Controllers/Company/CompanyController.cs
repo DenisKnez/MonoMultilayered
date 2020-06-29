@@ -52,6 +52,7 @@ namespace Project.WebAPI
             var companys = await CompanyService.FindCompanysAsync(companyParameters);
             var restCompanys = Mapper.Map<PagedList<CompanyRestModel>>(companys);
 
+            // change this in the snippet to be like single entity
             return Ok(DataShaper.ShapeData(restCompanys, fields));
         }
 
@@ -99,8 +100,23 @@ namespace Project.WebAPI
         }
     }
 
+    public class CompanyTypeRestModel : BaseRestModel
+    {
+        public string Name { get; set; }
+        public string Abrv { get; set; }
+
+    }
+
     public class CompanyRestModel : BaseRestModel
     {
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public DateTime DateFounded { get; set; }
+        public Guid CompanyTypeId { get; set; }
+
+        public CompanyTypeRestModel CompanyType { get; set; }
 
     }
 

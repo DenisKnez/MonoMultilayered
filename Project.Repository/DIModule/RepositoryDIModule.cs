@@ -12,6 +12,7 @@ namespace Project.Repository
         {
             Kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             Kernel.Bind<IUserRepository>().To<UserRepository>();
+            Kernel.Bind<ICompanyRepository>().To<CompanyRepository>();
         }
     }
 }

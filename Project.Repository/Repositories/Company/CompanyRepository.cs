@@ -3,9 +3,13 @@ using Project.Common;
 using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Repository.Common;
+using Project.Repository.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,20 +30,17 @@ namespace Project.Repository
             InitializeFilter(ref query, companyParameters);
             InitializeSorting(ref query, companyParameters.OrderBy);
 
-            return base.FindAsync(companyParameters, query);
+
+             return base.FindAsync(companyParameters, query);
         }
 
 
         public void InitializeFilter(ref IQueryable<Company> query, ICompanyParameters companyParameters)
         {
 
-            if (string.IsNullOrWhiteSpace(companyParameters.Name))
+            if (!string.IsNullOrWhiteSpace(companyParameters.Name))
             {
-                query.Where(x => EF.Functions.Like(x.Name, $"%{companyParameters.Name}%"));
-            }
-            if (companyParameters.DateCreated != null)
-            {
-                query.Where(x => x.DateCreated < companyParameters.DateCreated);
+                query = query.Where(x => EF.Functions.Like(x.Name, $"%{companyParameters.Name}%"));
             }
 
             InitializeBaseFilter(ref query, companyParameters);

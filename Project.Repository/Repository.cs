@@ -12,6 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Project.Common;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+
 
 namespace Project.Repository
 {
@@ -67,9 +70,18 @@ namespace Project.Repository
             if (entity != null) UnitOfWork.Context.Set<TEntity>().Remove(entity);
         }
 
-        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters>(TParameters parameters) where TParameters : IParameters
+        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters>(TParameters parameters, IQueryable<TEntity> source = null) where TParameters : IParameters
         {
-            return await PagedList<TEntity>.ToPagedListAsync(UnitOfWork.Context.Set<TEntity>().AsNoTracking(), parameters.PageNumber, parameters.PageSize);
+            if(source == null)
+            {
+                return await PagedList<TEntity>.ToPagedListAsync(UnitOfWork.Context.Set<TEntity>().AsNoTracking(), parameters.PageNumber, parameters.PageSize);
+            }
+            else
+            {
+                return await PagedList<TEntity>.ToPagedListAsync(source.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
+            }
+
+
         }
 
         public virtual async Task<IPagedList<TEntity>> FindAsync<TParameters>(TParameters parameters, IQueryable<TEntity> source = null) where TParameters : IParameters
@@ -95,11 +107,6 @@ namespace Project.Repository
             return await UnitOfWork.Context.Set<TEntity>().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        //public virtual IAsyncEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        //{
-        //    return UnitOfWork.Context.Set<TEntity>().Where(predicate).AsAsyncEnumerable();
-        //}
-
         public virtual TEntity Update(TEntity entity)
         {
             InitializeDateUpdated(entity);
@@ -112,24 +119,19 @@ namespace Project.Repository
         {
             if(parameters.IsActive)
             {
-                query.Where(entity => entity.IsActive == true);
+                query = query.Where(entity => entity.IsActive == true);
             }
         }
 
         /// <summary>
-        /// extract sort parameters from sort query
+        /// extract sort parameters from order by query
         /// </summary>
         /// <param name="query"></param>
         /// <param name="orderByQueryString"></param>
         /// <param name="defaultSort">If default sort is true sorting will be done by id, use this when you don't implement default sort</param>
         public virtual void InitializeSorting(ref IQueryable<TEntity> query, string orderByQueryString)
         {
-            if (!query.Any())
-            {
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(orderByQueryString))
+            if (!query.Any() || string.IsNullOrWhiteSpace(orderByQueryString))
             {
                 return;
             }
@@ -166,7 +168,6 @@ namespace Project.Repository
 
         }
 
-
-
     }
+
 }

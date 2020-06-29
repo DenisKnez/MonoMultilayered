@@ -34,8 +34,4 @@
     <ProjectReference Include="..\Project.Service\Project.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AutoMapper\System\" />
-  </ItemGroup>
-
 </Project>

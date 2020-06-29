@@ -31,6 +31,51 @@ BEGIN
 	ELSE
 		RAISE NOTICE 'LLC already exists in the company tyep lookup table';
 	END IF;
+
+	IF (NOT EXISTS (SELECT "Abrv" FROM "CompanyType" WHERE "Abrv" = 'LP')) THEN
+	INSERT INTO "CompanyType" ("Name", "Abrv", "IsActive", "DateCreated", "DateUpdated") 
+		VALUES ('LP', 'LP', true, now(), now());
+
+		RAISE NOTICE 'The LP was inserted into Company type lookup table';
+	ELSE
+		RAISE NOTICE 'LP already exists in the company tyep lookup table';
+	END IF;
+
+	IF (NOT EXISTS (SELECT "Abrv" FROM "CompanyType" WHERE "Abrv" = 'LLLP')) THEN
+	INSERT INTO "CompanyType" ("Name", "Abrv", "IsActive", "DateCreated", "DateUpdated") 
+		VALUES ('LLLP', 'LLLP', true, now(), now());
+
+		RAISE NOTICE 'The LLLP was inserted into Company type lookup table';
+	ELSE
+		RAISE NOTICE 'LLLP already exists in the company tyep lookup table';
+	END IF;
+
+	IF (NOT EXISTS (SELECT "Abrv" FROM "CompanyType" WHERE "Abrv" = 'PLLC')) THEN
+	INSERT INTO "CompanyType" ("Name", "Abrv", "IsActive", "DateCreated", "DateUpdated") 
+		VALUES ('PLLC', 'PLLC', true, now(), now());
+
+		RAISE NOTICE 'The PLLC was inserted into Company type lookup table';
+	ELSE
+		RAISE NOTICE 'PLLC already exists in the company tyep lookup table';
+	END IF;
+
+	IF (NOT EXISTS (SELECT "Abrv" FROM "CompanyType" WHERE "Abrv" = 'Corp')) THEN
+	INSERT INTO "CompanyType" ("Name", "Abrv", "IsActive", "DateCreated", "DateUpdated") 
+		VALUES ('Corp', 'Corp', true, now(), now());
+
+		RAISE NOTICE 'The Corp was inserted into Company type lookup table';
+	ELSE
+		RAISE NOTICE 'Corp already exists in the company tyep lookup table';
+	END IF;
+
+	IF (NOT EXISTS (SELECT "Abrv" FROM "CompanyType" WHERE "Abrv" = 'Inc')) THEN
+	INSERT INTO "CompanyType" ("Name", "Abrv", "IsActive", "DateCreated", "DateUpdated") 
+		VALUES ('Inc', 'Inc', true, now(), now());
+
+		RAISE NOTICE 'The Inc was inserted into Company type lookup table';
+	ELSE
+		RAISE NOTICE 'Inc already exists in the company tyep lookup table';
+	END IF;
 END
 
 $$

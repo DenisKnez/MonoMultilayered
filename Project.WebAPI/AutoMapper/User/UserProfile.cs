@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Project.WebAPI.AutoMapper
+namespace Project.WebAPI
 {
     public class UserProfile : Profile
     {
