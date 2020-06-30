@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Project.Common;
+using Project.Repository.Core;
 
 namespace Project.Repository
 {

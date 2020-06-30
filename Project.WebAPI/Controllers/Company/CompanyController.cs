@@ -47,13 +47,13 @@ namespace Project.WebAPI
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanys([FromQuery] CompanyParameters companyParameters, string fields = "")
+        public async Task<IActionResult> GetCompanys([FromQuery] CompanyParameters companyParameters)
         {
             var companys = await CompanyService.FindCompanysAsync(companyParameters);
             var restCompanys = Mapper.Map<PagedList<CompanyRestModel>>(companys);
 
             // change this in the snippet to be like single entity
-            return Ok(DataShaper.ShapeData(restCompanys, fields));
+            return Ok(DataShaper.ShapeData(restCompanys, companyParameters.Fields));
         }
 
         [HttpPost]

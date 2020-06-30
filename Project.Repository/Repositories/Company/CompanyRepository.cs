@@ -3,12 +3,14 @@ using Project.Common;
 using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Repository.Common;
+using Project.Repository.Core;
 using Project.Repository.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Dynamic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,11 +29,14 @@ namespace Project.Repository
         {
             IQueryable<Company> query = UnitOfWork.Context.Set<Company>();
 
+
             InitializeFilter(ref query, companyParameters);
             InitializeSorting(ref query, companyParameters.OrderBy);
 
+            FirstInitializeInclude(ref query, companyParameters.Fields);
 
-             return base.FindAsync(companyParameters, query);
+
+            return base.FindAsyncNoTracking(companyParameters, query);
         }
 
 

@@ -13,8 +13,8 @@ namespace Project.Repository.Common
 {
     public interface IRepository<TEntity> where TEntity : class, IBaseEntity
     {
-        Task<TEntity> GetAsync(Guid id);
-        Task<TEntity> GetAsyncNoTracking(Guid id);
+        Task<TEntity> GetAsync(Guid id, string fieldsString = "");
+        Task<TEntity> GetAsyncNoTracking(Guid id, string fieldsString = "");
         Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters;
         Task<IPagedList<TEntity>> FindAsync<TParameters>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters;
         Task<TEntity> AddAsync(TEntity entity);
