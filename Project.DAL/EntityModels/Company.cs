@@ -6,6 +6,11 @@ namespace Project.DAL.EntityModels
 {
     public partial class Company : IBaseEntity
     {
+        public Company()
+        {
+            User = new HashSet<User>();
+        }
+
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -18,5 +23,6 @@ namespace Project.DAL.EntityModels
         public DateTime DateUpdated { get; set; }
 
         public virtual CompanyType CompanyType { get; set; }
+        public virtual ICollection<User> User { get; set; }
     }
 }

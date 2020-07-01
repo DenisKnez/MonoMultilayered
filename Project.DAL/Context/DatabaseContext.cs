@@ -100,6 +100,11 @@ namespace Project.DAL.Context
                 entity.Property(e => e.Name).IsRequired();
 
                 entity.Property(e => e.Salary).HasColumnType("numeric(11,2)");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.User)
+                    .HasForeignKey(d => d.CompanyId)
+                    .HasConstraintName("fk_user_company");
             });
 
             modelBuilder.Entity<VersionInfo>(entity =>

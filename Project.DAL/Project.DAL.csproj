@@ -11,6 +11,7 @@
     <None Remove="System\Migrations\Migration_v_0_0_1\Company\v_0_0_1_Mig_105_CreateTable_Company.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\Lookup\v_0_0_1_Mig_104_CreateLookup_CompanyType.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_103_AlterTable_User.sql" />
+    <None Remove="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_106_AlterTable_User.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\v_0_0_1_AlterTable_User.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\v_0_0_1_CreateTable_User.sql" />
   </ItemGroup>
@@ -29,6 +30,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\Lookup\v_0_0_1_Mig_104_CreateLookup_CompanyType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_106_AlterTable_User.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_103_AlterTable_User.sql">
@@ -60,8 +64,9 @@
 
   <ItemGroup>
     <Folder Include="Context\" />
-    <Folder Include="Models\" />
     <Folder Include="System\Migrations\Utilities\" />
+    <Folder Include="Temp\TempEntities\" />
+    <Folder Include="Temp\TempContext\" />
   </ItemGroup>
 
   <ItemGroup>
