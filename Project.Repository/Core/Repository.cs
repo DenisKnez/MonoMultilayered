@@ -74,14 +74,16 @@ namespace Project.Repository.Core
         {
             if(query == null)
             {
-                return await PagedList<TEntity>.ToPagedListAsync(UnitOfWork.Context.Set<TEntity>().AsNoTracking(), parameters.PageNumber, parameters.PageSize);
+                query = UnitOfWork.Context.Set<TEntity>();
             }
-            else
-            {
-                InitializeDataShaping(ref query, parameters.Fields);
 
-                return await PagedList<TEntity>.ToPagedListAsync(query.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
-            }
+            InitializeDataShaping(ref query, parameters.Fields);
+            InitializeInclude(ref query, parameters.Fields);
+            InitializeBaseFilter(ref query, parameters);
+
+
+
+            return await PagedList<TEntity>.ToPagedListAsync(query.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
 
 
         }

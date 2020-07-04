@@ -130,8 +130,6 @@ namespace Project.WebAPI
 
     }
 
-
-
     public class UserRestModel : BaseRestModel
     {
         public string Name { get; set; }
@@ -145,6 +143,8 @@ namespace Project.WebAPI
         public DateTime DateOfBirth { get; set; }
 
         public DateTime DateJoined { get; set; }
+
+        public CompanyRestModel Company { get; set; }
 
     }
 

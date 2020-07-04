@@ -18,6 +18,6 @@ namespace Project.Model
 
         public DateTime DateJoined { get; set; }
 
-
+        public CompanyModel Company { get; set; }
     }
 }

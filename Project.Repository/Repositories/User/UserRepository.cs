@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Project.Common;
 using Project.Repository.Core;
+using Project.Repository.Extensions;
+using System.Diagnostics;
 
 namespace Project.Repository
 {
@@ -29,7 +31,7 @@ namespace Project.Repository
             InitializeFilter(ref query, userParameters);
             InitializeSorting(ref query, userParameters.OrderBy);
 
-            return base.FindAsync(userParameters, query);
+            return base.FindAsyncNoTracking(userParameters, query);
         }
 
 

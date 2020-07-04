@@ -33,9 +33,6 @@ namespace Project.Repository
             InitializeFilter(ref query, companyParameters);
             InitializeSorting(ref query, companyParameters.OrderBy);
 
-            FirstInitializeInclude(ref query, companyParameters.Fields);
-
-
             return base.FindAsyncNoTracking(companyParameters, query);
         }
 
