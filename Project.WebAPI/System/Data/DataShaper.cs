@@ -1,6 +1,7 @@
 ﻿using Project.WebAPI.System;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace Project.WebAPI.System
 {
-    public class DataShaper<T> : IDataShaper<T> where T : IBaseRestModel
+    public class DataShaper<T> : IDataShaper<T> where T : class, IBaseRestModel
     {
         public PropertyInfo[] Properties { get; set; }
 
@@ -17,77 +18,91 @@ namespace Project.WebAPI.System
             Properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
         }
 
-        public IEnumerable<ExpandoObject> ShapeData(IEnumerable<T> entities, string fieldsString)
+        /// <summary>
+        /// Shaped the entered model to only have fields specified in the fields parameter
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public object ShapeData(T model, string fields)
         {
-            var requiredProperties = GetRequiredProperties(fieldsString);
-
-            return FetchData(entities, requiredProperties);
-        }
-
-        public ExpandoObject ShapeData(T entity, string fieldsString)
-        {
-            var requiredProperties = GetRequiredProperties(fieldsString);
-
-            return FetchDataForEntity(entity, requiredProperties);
-        }
-
-        private IEnumerable<PropertyInfo> GetRequiredProperties(string fieldsString)
-        {
-            var requiredProperties = new List<PropertyInfo>();
-
-            if (!string.IsNullOrWhiteSpace(fieldsString))
+            if (String.IsNullOrEmpty(fields))
             {
-                var fields = fieldsString.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-
-                foreach (var field in fields)
-                {
-                    var property = Properties.FirstOrDefault(pi => pi.Name.Equals(field.Trim(), StringComparison.InvariantCultureIgnoreCase));
-
-                    if(property == null)
-                    {
-                        continue;
-                    }
-
-                    requiredProperties.Add(property);
-                }
+                return model;
             }
             else
             {
-                requiredProperties = Properties.ToList();
+                var properties = GetPropertiesFromFieldString(fields);
+                return ReturnRequiredProperties(model, properties);
             }
-
-            return requiredProperties;
         }
 
-        private IEnumerable<ExpandoObject> FetchData(IEnumerable<T> entities, IEnumerable<PropertyInfo> requiredProperties)
+
+        /// <summary>
+        /// Shaped the entered models to only have fields specified in the fields parameter
+        /// </summary>
+        /// <param name="models"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public List<object> ShapeData(IEnumerable<T> models, string fields)
         {
-            var shapedData = new List<ExpandoObject>();
+            var shapedData = new List<object>();
 
-            foreach (var entity in entities)
+            if(String.IsNullOrEmpty(fields))
             {
-                var shapedObject = FetchDataForEntity(entity, requiredProperties);
-
-                shapedData.Add(shapedObject);
+                shapedData.AddRange(models);
             }
-
+            else
+            {
+                foreach (var model in models)
+                {
+                    var properties = GetPropertiesFromFieldString(fields);
+                    shapedData.Add(ReturnRequiredProperties(model, properties));
+                }
+            }
             return shapedData;
-
         }
 
-        private ExpandoObject FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
+        private ExpandoObject ReturnRequiredProperties(object value, IEnumerable<string[]> requiredProperties, int depth = 0)
         {
             var shapedObject = new ExpandoObject();
 
-            foreach (var property in requiredProperties)
-            {
-                var objectPropertyValue = property.GetValue(entity);
-                shapedObject.TryAdd(property.Name, objectPropertyValue);
-            }
+            var classProperties = value.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
+
+            foreach (var property in requiredProperties.GroupBy(path => path[depth]))
+            {
+                var matchedProperty = classProperties.FirstOrDefault(prop => prop.Name.Equals(property.Key, StringComparison.InvariantCultureIgnoreCase));
+
+
+                if (matchedProperty == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    var childMembers = property.Where(path => depth + 1 < path.Length);
+
+                    if (matchedProperty.PropertyType.BaseType.Equals(typeof(BaseRestModel)) && childMembers.Any())
+                    {
+                        var complexObject = ReturnRequiredProperties(matchedProperty.GetValue(value), childMembers, depth + 1);
+                        shapedObject.TryAdd(matchedProperty.Name, complexObject);
+                    }
+                    else
+                    {
+                        var objectPropertyValue = matchedProperty.GetValue(value);
+                        shapedObject.TryAdd(matchedProperty.Name, objectPropertyValue);
+                    }
+                }
+
+            }
             return shapedObject;
         }
 
+        private IEnumerable<string[]> GetPropertiesFromFieldString(string requiredFieldsString)
+        {
+            return requiredFieldsString.Split(',').Select(nestedProperty => nestedProperty.Trim()).Select(property => property.Split('.'));
+        }
 
 
     }

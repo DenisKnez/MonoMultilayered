@@ -13,13 +13,23 @@ namespace Project.Repository.Core
 {
     public partial class Repository<TEntity>
     {
-        public void InitializeDataShaping(ref IQueryable<TEntity> query, string fieldsString)
+        private IEnumerable<string[]> GetPropertiesFromFieldString(string requiredFieldsString)
         {
-            if (!String.IsNullOrEmpty(fieldsString))
+            return requiredFieldsString.Split(',').Select(nestedProperty => nestedProperty.Trim()).Select(property => property.Split('.'));
+        }
+
+        /// <summary>
+        /// Created a select query statement by the provided fields
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="requiredFieldsString"></param>
+        public void InitializeQueryDataShaping(ref IQueryable<TEntity> query, string requiredFieldsString)
+        {
+            if (!String.IsNullOrEmpty(requiredFieldsString))
             {
                 var type = typeof(TEntity);
 
-                IEnumerable<string[]> fields = fieldsString.Split(',').Select(x => x.Trim()).Select(properties => properties.Split('.'));
+                IEnumerable<string[]> fields = GetPropertiesFromFieldString(requiredFieldsString);
 
                 ParameterExpression parameter = Expression.Parameter(type, "s");
 
@@ -29,20 +39,11 @@ namespace Project.Repository.Core
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="fields"></param>
-        /// <returns></returns>
         private Expression DynamicSelectExpression(Type type, Expression source, IEnumerable<string[]> fields, int depth = 0)
         {
-            Debug.WriteLine("RECURSION METHOD: Depth {0}, Type: {1}, Source: {2}, SplitStringArray: {3}", depth, type, source, fields.Select(s => s[depth]));
-
             var bindings = new List<MemberBinding>();
 
-            // t
             var target = Expression.Parameter(type, type.Name);
-
 
             foreach (var field in fields.GroupBy(path => path[depth]))
             {
@@ -55,7 +56,6 @@ namespace Project.Repository.Core
                 }
                 else
                 {
-                    // t.fieldName
                     var sourceMember = Expression.Property(source, matchedProperty);
 
                     var targetMember = type.GetProperty(matchedProperty.Name);
@@ -69,21 +69,20 @@ namespace Project.Repository.Core
                     }
                     else
                     {
-                        // fieldName
-                        //var targetValue = type.GetProperty(targetPropertyString);
-                        // fieldName = typeName.fieldName
                         bindings.Add(Expression.Bind(targetMember, sourceMember));
                     }
-
                 }
-
             }
 
             return Expression.MemberInit(Expression.New(type), bindings);
         }
 
 
-
+        /// <summary>
+        /// Add includes for fields provided, if no fields are provided includes all fields
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="fieldsString"></param>
         public void InitializeInclude(ref IQueryable<TEntity> query, string fieldsString)
         {
             if (!String.IsNullOrEmpty(fieldsString))
@@ -105,23 +104,15 @@ namespace Project.Repository.Core
             foreach (var property in properties)
             {
                 var propertyType = property.PropertyType;
-                Debug.WriteLine("Property: " + propertyType.Name);
                 if (propertyType.GetInterfaces().Contains(typeof(IBaseEntity)))
                 {
-                    Debug.WriteLine("Base entity propeprty: " + property.Name);
-
                     var nestedProperties = propertyType.GetProperties();
 
-                    Debug.WriteLine("Type property: " + property.Name);
                     foreach (var nestedProperty in nestedProperties)
                     {
-
-                        Debug.WriteLine("Nested propeprty: " + nestedProperty.PropertyType.Name + "name: " +  nestedProperty.Name);
-
                         var nestedPropertyType = nestedProperty.PropertyType;
                         if (nestedPropertyType.GetInterfaces().Contains(typeof(IBaseEntity)))
                         {
-                            Debug.WriteLine("Base entity nested propeprty: " + nestedPropertyType.Name);
                             query = query.Include(property.Name + "." + nestedProperty.Name);
                         }
                         else
@@ -135,14 +126,14 @@ namespace Project.Repository.Core
             }
         }
 
-        public void InitializeIncludeForSelectedFields(ref IQueryable<TEntity> query, string[] fields)
+        private void InitializeIncludeForSelectedFields(ref IQueryable<TEntity> query, string[] fields)
         {
             PropertyInfo[] properties = typeof(TEntity).GetProperties();
             List<string> requiredTypes = new List<string>();
 
-
             foreach (var field in fields)
             {
+                //TODO: check for performance improvements
 
                 if (field.Contains("."))
                 {
@@ -193,15 +184,7 @@ namespace Project.Repository.Core
                     }
 
                 }
-
-
-
-
             }
-
         }
-
-
-
     }
 }

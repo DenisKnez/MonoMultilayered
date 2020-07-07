@@ -77,10 +77,9 @@ namespace Project.Repository.Core
                 query = UnitOfWork.Context.Set<TEntity>();
             }
 
-            InitializeDataShaping(ref query, parameters.Fields);
             InitializeInclude(ref query, parameters.Fields);
+            InitializeQueryDataShaping(ref query, parameters.Fields);
             InitializeBaseFilter(ref query, parameters);
-
 
 
             return await PagedList<TEntity>.ToPagedListAsync(query.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
@@ -90,16 +89,16 @@ namespace Project.Repository.Core
 
         public virtual async Task<IPagedList<TEntity>> FindAsync<TParameters>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters
         {
-            if(query == null)
+            if (query == null)
             {
-                return await PagedList<TEntity>.ToPagedListAsync(UnitOfWork.Context.Set<TEntity>(), parameters.PageNumber, parameters.PageSize);
+                query = UnitOfWork.Context.Set<TEntity>();
             }
-            else
-            {
-                InitializeDataShaping(ref query, parameters.Fields);
 
-                return await PagedList<TEntity>.ToPagedListAsync(query, parameters.PageNumber, parameters.PageSize);
-            }
+            InitializeInclude(ref query, parameters.Fields);
+            InitializeQueryDataShaping(ref query, parameters.Fields);
+            InitializeBaseFilter(ref query, parameters);
+
+            return await PagedList<TEntity>.ToPagedListAsync(query, parameters.PageNumber, parameters.PageSize);
 
         }
 
@@ -107,7 +106,7 @@ namespace Project.Repository.Core
         {
             var set = UnitOfWork.Context.Set<TEntity>().AsNoTracking().AsQueryable();
 
-            InitializeDataShaping(ref set, fieldsString);
+            InitializeQueryDataShaping(ref set, fieldsString);
             return await set.SingleOrDefaultAsync(x => x.Id == id);
         }
 
@@ -115,7 +114,7 @@ namespace Project.Repository.Core
         {
             var set = UnitOfWork.Context.Set<TEntity>().AsQueryable();
 
-            InitializeDataShaping(ref set, fieldsString);
+            InitializeQueryDataShaping(ref set, fieldsString);
             return await set.SingleOrDefaultAsync(x => x.Id == id);
         }
 

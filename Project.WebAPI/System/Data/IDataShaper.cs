@@ -7,7 +7,7 @@ namespace Project.WebAPI.System
 {
     public interface IDataShaper<T>
     {
-        IEnumerable<ExpandoObject> ShapeData(IEnumerable<T> entities, string fieldsString);
-        ExpandoObject ShapeData(T entity, string fieldsString);
+        List<object> ShapeData(IEnumerable<T> models, string fieldsString);
+        object ShapeData(T model, string fieldsString);
     }
 }
