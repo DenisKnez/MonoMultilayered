@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.Common;
+using Project.Common.Filters;
 using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Repository.Common;
@@ -25,7 +26,7 @@ namespace Project.Repository
 
         }
 
-        public Task<IPagedList<Company>> FindCompanyAsync(ICompanyParameters companyParameters)
+        public Task<IPagedList<Company>> FindCompanyAsync(IParameters<ICompanyFilter> companyParameters)
         {
             IQueryable<Company> query = UnitOfWork.Context.Set<Company>();
 
@@ -33,19 +34,20 @@ namespace Project.Repository
             InitializeFilter(ref query, companyParameters);
             InitializeSorting(ref query, companyParameters.OrderBy);
 
-            return base.FindAsyncNoTracking(companyParameters, query);
+
+             return base.FindAsync<IParameters<ICompanyFilter>, ICompanyFilter>(companyParameters, query);
         }
 
 
-        public void InitializeFilter(ref IQueryable<Company> query, ICompanyParameters companyParameters)
+        public void InitializeFilter(ref IQueryable<Company> query, IParameters<ICompanyFilter> companyParameters)
         {
 
-            if (!string.IsNullOrWhiteSpace(companyParameters.Name))
+            if (!string.IsNullOrWhiteSpace(companyParameters.Filter.Name))
             {
-                query = query.Where(x => EF.Functions.Like(x.Name, $"%{companyParameters.Name}%"));
+                query = query.Where(x => EF.Functions.Like(x.Name, $"%{companyParameters.Filter.Name}%"));
             }
 
-            InitializeBaseFilter(ref query, companyParameters);
+            InitializeBaseFilter<IParameters<ICompanyFilter>, ICompanyFilter>(ref query, companyParameters);
 
         }
     }

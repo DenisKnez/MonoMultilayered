@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Project.Common
 {
-    public abstract class Parameters : IParameters
+    public abstract class Parameters<TFilter> : IParameters<TFilter>
     {
         protected int maxPageSize = 50;
         public virtual int PageNumber { get; set; } = 1;
@@ -26,18 +26,7 @@ namespace Project.Common
 
         public string Fields { get; set; }
 
-
-        #region Filters
-
-        public DateTime DateCreated { get; set; }
-
-        public DateTime DateUpdated { get; set; }
-
-        public bool IsActive { get; set; }
-
-        public Guid Id { get; set; }
-
-        #endregion
+        public TFilter Filter { get; set; }
 
 
     }

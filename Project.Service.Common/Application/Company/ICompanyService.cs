@@ -1,4 +1,5 @@
 ﻿using Project.Common;
+using Project.Common.Filters;
 using Project.Common.System;
 using Project.Model;
 using System;
@@ -21,7 +22,7 @@ namespace Project.Service.Common
 
         Task<int> DeleteCompanyAsync(Guid id);
 
-        Task<IPagedList<CompanyModel>> FindCompanysAsync(ICompanyParameters companyParameters);
+        Task<IPagedList<CompanyModel>> FindCompanysAsync(IParameters<ICompanyFilter> companyParameters);
 
     }
 

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project.Common
+namespace Project.Common.Filters
 {
-    public class CompanyParameters : Parameters, ICompanyParameters
+    public interface IUserFilter : IBaseFilter
     {
         public string Name { get; set; }
-
     }
 }

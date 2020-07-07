@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Project.Common;
+using Project.Common.Filters;
 using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Model;
@@ -34,7 +35,7 @@ namespace Project.Service
             return companyModel;
         }
 
-        public async Task<IPagedList<CompanyModel>> FindCompanysAsync(ICompanyParameters companyParameters)
+        public async Task<IPagedList<CompanyModel>> FindCompanysAsync(IParameters<ICompanyFilter> companyParameters)
         {
             var companys = await CompanyRepository.FindCompanyAsync(companyParameters);
             return Mapper.Map<PagedList<Company>, PagedList<CompanyModel>>((PagedList<Company>)companys);

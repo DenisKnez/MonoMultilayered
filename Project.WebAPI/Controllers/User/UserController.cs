@@ -11,6 +11,7 @@ using Project.Common.System;
 using Project.Model;
 using Newtonsoft.Json;
 using Project.Common;
+using Project.Common.Filters;
 
 namespace Project.WebAPI
 {
@@ -50,7 +51,7 @@ namespace Project.WebAPI
 
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters, string fields = "")
+        public async Task<IActionResult> GetUsers([FromQuery] IParameters<IUserFilter> userParameters, string fields = "")
         {
             var users = await UserService.FindUsersAsync(userParameters);
 

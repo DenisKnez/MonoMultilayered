@@ -15,8 +15,8 @@ namespace Project.Repository.Common
     {
         Task<TEntity> GetAsync(Guid id, string fieldsString = "");
         Task<TEntity> GetAsyncNoTracking(Guid id, string fieldsString = "");
-        Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters;
-        Task<IPagedList<TEntity>> FindAsync<TParameters>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters;
+        Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter;
+        Task<IPagedList<TEntity>> FindAsync<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> source) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter;
         Task<TEntity> AddAsync(TEntity entity);
         Task Delete(Guid id);
         TEntity Update(TEntity entity);

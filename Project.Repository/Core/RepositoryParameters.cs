@@ -58,9 +58,9 @@ namespace Project.Repository.Core
         }
 
 
-        public void InitializeBaseFilter<TParameters>(ref IQueryable<TEntity> query, TParameters parameters) where TParameters : IParameters
+        public void InitializeBaseFilter<TParameters, TFilter>(ref IQueryable<TEntity> query, TParameters parameters) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter
         {
-            if (parameters.IsActive)
+            if (parameters.Filter.IsActive)
             {
                 query = query.Where(entity => entity.IsActive == true);
             }
