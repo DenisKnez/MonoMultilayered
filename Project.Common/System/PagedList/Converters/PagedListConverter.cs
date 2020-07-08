@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+// This namespace needs to stay the same so the automapper can access this file
 namespace Project.WebAPI.AutoMapper.System
 {
     public class PagedListConverter<TSource, TDestination> : ITypeConverter<PagedList<TSource>, PagedList<TDestination>>

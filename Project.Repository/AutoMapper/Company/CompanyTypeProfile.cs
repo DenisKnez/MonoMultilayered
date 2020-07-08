@@ -17,10 +17,6 @@ namespace Project.Repository
             CreateMap<CompanyTypeModel, CompanyType>();
 
             CreateMap<PagedList<CompanyType>, PagedList<CompanyTypeModel>>().ConvertUsing<PagedListConverter<CompanyType, CompanyTypeModel>>();
-
-
         }
-
-
     }
 }

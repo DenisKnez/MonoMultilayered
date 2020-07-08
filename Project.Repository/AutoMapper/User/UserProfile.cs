@@ -18,8 +18,6 @@ namespace Project.Repository
 
             CreateMap<PagedList<User>, PagedList<UserModel>>().ConvertUsing<PagedListConverter<User, UserModel>>();
 
-
-
         }
     }
 }

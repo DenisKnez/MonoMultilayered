@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Project.Common
 {
+    /// <summary>
+    /// Abstract class used to pass parameters through the layers
+    /// </summary>
+    /// <typeparam name="TFilter"></typeparam>
     public abstract class Parameters<TFilter> : IParameters<TFilter>
     {
         protected int maxPageSize = 50;
@@ -27,7 +31,6 @@ namespace Project.Common
         public string Fields { get; set; }
 
         public TFilter Filter { get; set; }
-
 
     }
 }

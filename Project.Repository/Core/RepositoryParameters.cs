@@ -60,7 +60,7 @@ namespace Project.Repository.Core
 
         public void InitializeBaseFilter<TParameters, TFilter>(ref IQueryable<TEntity> query, TParameters parameters) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter
         {
-            if (parameters.Filter.IsActive)
+            if (parameters.Filter.IsActive != null)
             {
                 query = query.Where(entity => entity.IsActive == true);
             }

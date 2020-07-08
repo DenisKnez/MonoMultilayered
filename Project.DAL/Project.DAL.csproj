@@ -64,7 +64,6 @@
 
   <ItemGroup>
     <Folder Include="Context\" />
-    <Folder Include="System\Migrations\Utilities\" />
     <Folder Include="Temp\TempEntities\" />
     <Folder Include="Temp\TempContext\" />
   </ItemGroup>

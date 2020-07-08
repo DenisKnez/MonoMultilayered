@@ -10,7 +10,12 @@ namespace Project.Repository.Extensions
 {
     public static class ToSqlExtensions
     {
-
+        /// <summary>
+        /// USE FOR TESTING! Used to get the sql from the query for debugging
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public static string ToSql<T>(this IQueryable<T> query) where T : class
         {
             var enumerator = query.Provider.Execute<IEnumerable<T>>(query.Expression).GetEnumerator();

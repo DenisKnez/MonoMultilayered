@@ -14,8 +14,6 @@ namespace Project.Repository
     {
         public DatabaseContext Context { get; set; }
 
-        //public IUserRepository UserRepository{ get; set; }
-
         public UnitOfWork(DatabaseContext context)
         {
             Context = context;
