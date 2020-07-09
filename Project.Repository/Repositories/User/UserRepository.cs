@@ -32,7 +32,7 @@ namespace Project.Repository
             InitializeFilter(ref query, userParameters);
             InitializeSorting(ref query, userParameters.OrderBy);
 
-            return base.FindAsync<IParameters<IUserFilter>, IUserFilter>(userParameters, query);
+            return base.FindAsyncNoTracking<IParameters<IUserFilter>, IUserFilter>(userParameters, query);
         }
 
 

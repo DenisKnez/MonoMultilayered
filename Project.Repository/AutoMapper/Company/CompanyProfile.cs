@@ -18,9 +18,6 @@ namespace Project.Repository
             CreateMap<CompanyModel, Company>();
 
             CreateMap<PagedList<Company>, PagedList<CompanyModel>>().ConvertUsing<PagedListConverter<Company, CompanyModel>>();
-
-
         }
-
     }
 }

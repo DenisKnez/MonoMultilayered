@@ -5,6 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace Project.Common.Connection
 {
+    /// <summary>
+    /// Used to get individual properties from the connection string
+    /// </summary>
     public class ConnectionStringManager
     {
         const string pattern = @"[a-zA-Z0-9_.\-]*";
@@ -12,7 +15,6 @@ namespace Project.Common.Connection
         public ConnectionStringManager(string connectionString)
         {
             SetConnectionStringProperties(connectionString);
-            //SetConnectionStringProperties(RuntimeConfiguration.GetConnectionString("PostgreSQL_Connection_Key"));
         }
 
         public string DatabaseName { get; set; }
@@ -23,51 +25,57 @@ namespace Project.Common.Connection
 
         public string DatabaseHost { get; set; }
 
-        public void SetConnectionStringProperties(string connectionString)
+
+        /// <summary>
+        /// Gets information from the connection string and separates it into local propeprties
+        /// </summary>
+        /// <param name="connectionString"></param>
+        private void SetConnectionStringProperties(string connectionString)
         {
-            Console.WriteLine("Connection String: " + connectionString);
             SetUserName(connectionString);
             SetUserPassword(connectionString);
             SetDatabaseName(connectionString);
             SetDatabaseHost(connectionString);
         }
 
-        public void SetUserName(string connectionString)
+        /// <summary>
+        /// Get the UserName from the connection string and place it to local property UserName
+        /// </summary>
+        /// <param name="connectionString"></param>
+        private void SetUserName(string connectionString)
         {
             Match userName = Regex.Match(connectionString, @"User ID=" + pattern);
             UserName = Regex.Replace(userName.Value, @"User ID=", "");
         }
 
-        public void SetUserPassword(string connectionString)
+        /// <summary>
+        /// Get the User password from the connection string and place it to local property UserPassword
+        /// </summary>
+        /// <param name="connectionString"></param>
+        private void SetUserPassword(string connectionString)
         {
             Match userPassword = Regex.Match(connectionString, @"Password=" + pattern);
             UserPassword = Regex.Replace(userPassword.Value, @"Password=", "");
         }
 
-        public void SetDatabaseName(string connectionString)
+        /// <summary>
+        /// Get the Database name from the connection string and place it to local property DatabaseName
+        /// </summary>
+        /// <param name="connectionString"></param>
+        private void SetDatabaseName(string connectionString)
         {
-            //User ID=postgres;Password=denis;Host=192.168.1.3;Port=5432;Database=postgres;
-
             Match databaseName = Regex.Match(connectionString, @"Database=" + pattern);
-
             DatabaseName = Regex.Replace(databaseName.Value, @"Database=", "");
-
-            // FOR DEBUGGING
-            //Debug.WriteLine("Database value: " + connectionStringDatabasePart.Value);
-            //Debug.WriteLine("Database name: " + databaseName);
         }
 
-        public void SetDatabaseHost(string connectionString)
+        /// <summary>
+        /// Get the Database host from the connection string and place it to local property DatabaseHost
+        /// </summary>
+        /// <param name="connectionString"></param>
+        private void SetDatabaseHost(string connectionString)
         {
-            //User ID=postgres;Password=denis;Host=192.168.1.3;Port=5432;Database=postgres;
-
             Match databaseHost = Regex.Match(connectionString, @"Server=" + pattern);
-
             DatabaseHost = Regex.Replace(databaseHost.Value, @"Server=", "");
-
-            // FOR DEBUGGING
-            //Debug.WriteLine("Database value: " + connectionStringDatabasePart.Value);
-            //Debug.WriteLine("Database name: " + databaseName);
         }
 
 
