@@ -7,13 +7,10 @@ using Project.Model;
 using Project.Service.Common;
 using Project.WebAPI.System;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Project.WebAPI
 {
-
     [Route("api/companys")]
     [ApiController]
     public class CompanyController : ControllerBase
@@ -48,7 +45,7 @@ namespace Project.WebAPI
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanys([FromQuery] IParameters<ICompanyFilter> companyParameters, string fields = "")
+        public async Task<IActionResult> GetCompanys([FromQuery] Parameters<CompanyFilter> companyParameters, string fields = "")
         {
             var companys = await CompanyService.FindCompanysAsync(companyParameters);
             var restCompanys = Mapper.Map<PagedList<CompanyRestModel>>(companys);
@@ -105,7 +102,6 @@ namespace Project.WebAPI
     {
         public string Name { get; set; }
         public string Abrv { get; set; }
-
     }
 
     public class CompanyRestModel : BaseRestModel
@@ -118,7 +114,5 @@ namespace Project.WebAPI
         public Guid CompanyTypeId { get; set; }
 
         public CompanyTypeRestModel CompanyType { get; set; }
-
     }
-
 }

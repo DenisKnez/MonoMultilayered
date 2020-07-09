@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Project.Common
 {
     /// <summary>
-    /// Every filter needs to inherit this interface, it provides properties that all entities have
+    /// Every filter needs to inherit this class, it provides properties that all entities have
     /// </summary>
-    public interface IBaseFilter
+    public class BaseFilter
     {
         public DateTime DateCreated { get; set; }
 
@@ -16,6 +14,5 @@ namespace Project.Common
         public bool? IsActive { get; set; }
 
         public Guid Id { get; set; }
-
     }
 }

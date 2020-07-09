@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Project.Common.Filters
+﻿namespace Project.Common.Filters
 {
-    public interface IUserFilter : IBaseFilter
+    public class UserFilter : BaseFilter
     {
         public string Name { get; set; }
     }

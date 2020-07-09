@@ -1,20 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project.Common.System;
-using Project.DAL;
-using Project.DAL.EntityModels;
-using Project.Repository.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq.Dynamic.Core;
 using Project.Common;
 using Project.Common.Filters;
+using Project.Common.System;
+using Project.DAL.EntityModels;
+using Project.Repository.Common;
 using Project.Repository.Core;
-using Project.Repository.Extensions;
-using System.Diagnostics;
+using System;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace Project.Repository
 {
@@ -22,34 +16,33 @@ namespace Project.Repository
     {
         public UserRepository(IUnitOfWork uow) : base(uow)
         {
-
         }
 
-        public Task<IPagedList<User>> FindUserAsync(IParameters<IUserFilter> userParameters)
+        public Task<IPagedList<User>> FindUserAsync(IParameters<UserFilter> userParameters)
         {
             IQueryable<User> query = UnitOfWork.Context.Set<User>();
 
             InitializeFilter(ref query, userParameters);
             InitializeSorting(ref query, userParameters.OrderBy);
 
-            return base.FindAsyncNoTracking<IParameters<IUserFilter>, IUserFilter>(userParameters, query);
+            return base.FindAsyncNoTracking<IParameters<UserFilter>, UserFilter>(userParameters, query);
         }
 
-
-        public void InitializeFilter(ref IQueryable<User> query, IParameters<IUserFilter> userParameters)
+        public void InitializeFilter(ref IQueryable<User> query, IParameters<UserFilter> userParameters)
         {
-
-            if (string.IsNullOrWhiteSpace(userParameters.Filter.Name))
+            if (userParameters.Filter == null)
             {
-                query.Where(x => EF.Functions.Like(x.Name, $"%{userParameters.Filter.Name}%"));
-            }
-            if (userParameters.Filter.DateCreated != null)
-            {
-                query.Where(x => x.DateCreated < userParameters.Filter.DateCreated);
+                if (!String.IsNullOrWhiteSpace(userParameters.Filter.Name))
+                {
+                    query = query.Where(x => EF.Functions.Like(x.Name, $"%{userParameters.Filter.Name}%"));
+                }
+                if (userParameters.Filter.DateCreated != null)
+                {
+                    query = query.Where(x => x.DateCreated < userParameters.Filter.DateCreated);
+                }
             }
 
-            InitializeBaseFilter<IParameters<IUserFilter>, IUserFilter>(ref query, userParameters);
-
+            InitializeBaseFilter<IParameters<UserFilter>, UserFilter>(ref query, userParameters);
         }
     }
 }

@@ -1,20 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Project.Common;
 using Project.Common.System;
 using Project.DAL;
-using Project.DAL.EntityModels;
 using Project.Repository.Common;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using System.Linq.Dynamic.Core;
-using Project.Common;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-
 
 namespace Project.Repository.Core
 {
@@ -48,8 +39,7 @@ namespace Project.Repository.Core
             entity.DateUpdated = DateTime.UtcNow;
         }
 
-        #endregion
-
+        #endregion Entity Setup Methods
 
         public virtual async Task DeactivateAsync(Guid id)
         {
@@ -70,9 +60,9 @@ namespace Project.Repository.Core
             if (entity != null) UnitOfWork.Context.Set<TEntity>().Remove(entity);
         }
 
-        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter
+        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : BaseFilter
         {
-            if(query == null)
+            if (query == null)
             {
                 query = UnitOfWork.Context.Set<TEntity>();
             }
@@ -81,13 +71,10 @@ namespace Project.Repository.Core
             InitializeQueryDataShaping(ref query, parameters.Fields);
             InitializeBaseFilter<TParameters, TFilter>(ref query, parameters);
 
-
             return await PagedList<TEntity>.ToPagedListAsync(query.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
-
-
         }
 
-        public virtual async Task<IPagedList<TEntity>> FindAsync<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter
+        public virtual async Task<IPagedList<TEntity>> FindAsync<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : BaseFilter
         {
             if (query == null)
             {
@@ -99,14 +86,13 @@ namespace Project.Repository.Core
             InitializeBaseFilter<TParameters, TFilter>(ref query, parameters);
 
             return await PagedList<TEntity>.ToPagedListAsync(query, parameters.PageNumber, parameters.PageSize);
-
         }
 
         public virtual async Task<TEntity> GetAsyncNoTracking(Guid id, string fieldsString = "")
         {
             var set = UnitOfWork.Context.Set<TEntity>().AsNoTracking().AsQueryable();
 
-            InitializeQueryDataShaping(ref set, fieldsString); 
+            InitializeQueryDataShaping(ref set, fieldsString);
             return await set.SingleOrDefaultAsync(x => x.Id == id);
         }
 
@@ -125,9 +111,5 @@ namespace Project.Repository.Core
             UnitOfWork.Context.Update(entity);
             return entity;
         }
-
-
-
     }
-
 }

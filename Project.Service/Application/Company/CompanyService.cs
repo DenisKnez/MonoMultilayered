@@ -7,13 +7,10 @@ using Project.Model;
 using Project.Repository.Common;
 using Project.Service.Common;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Service
 {
-
     public class CompanyService : ICompanyService
     {
         public CompanyService(IMapper mapper, ICompanyRepository companyRepository, IUnitOfWork unitOfWork)
@@ -35,7 +32,7 @@ namespace Project.Service
             return companyModel;
         }
 
-        public async Task<IPagedList<CompanyModel>> FindCompanysAsync(IParameters<ICompanyFilter> companyParameters)
+        public async Task<IPagedList<CompanyModel>> FindCompanysAsync(Parameters<CompanyFilter> companyParameters)
         {
             var companys = await CompanyRepository.FindCompanyAsync(companyParameters);
             return Mapper.Map<PagedList<Company>, PagedList<CompanyModel>>((PagedList<Company>)companys);
@@ -69,9 +66,6 @@ namespace Project.Service
         {
             await CompanyRepository.Delete(id);
             return await UnitOfWork.CommitAsync();
-
         }
     }
-
-
 }

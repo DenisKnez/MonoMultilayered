@@ -7,9 +7,6 @@ using Project.Model;
 using Project.Repository.Common;
 using Project.Service.Common;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Service
@@ -35,7 +32,7 @@ namespace Project.Service
             return userModel;
         }
 
-        public async Task<IPagedList<UserModel>> FindUsersAsync(IParameters<IUserFilter> userParameters)
+        public async Task<IPagedList<UserModel>> FindUsersAsync(IParameters<UserFilter> userParameters)
         {
             var users = await UserRepository.FindUserAsync(userParameters);
             return Mapper.Map<PagedList<User>, PagedList<UserModel>>((PagedList<User>)users);
@@ -69,8 +66,6 @@ namespace Project.Service
         {
             await UserRepository.Delete(id);
             return await UnitOfWork.CommitAsync();
-
         }
-
     }
 }

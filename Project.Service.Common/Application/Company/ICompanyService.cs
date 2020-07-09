@@ -3,13 +3,10 @@ using Project.Common.Filters;
 using Project.Common.System;
 using Project.Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Service.Common
 {
-
     public interface ICompanyService
     {
         Task<ICompanyModel> GetCompanyNoTrackingAsync(Guid id);
@@ -22,10 +19,6 @@ namespace Project.Service.Common
 
         Task<int> DeleteCompanyAsync(Guid id);
 
-        Task<IPagedList<CompanyModel>> FindCompanysAsync(IParameters<ICompanyFilter> companyParameters);
-
+        Task<IPagedList<CompanyModel>> FindCompanysAsync(Parameters<CompanyFilter> companyParameters);
     }
-
-
-
 }
