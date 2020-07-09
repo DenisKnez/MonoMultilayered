@@ -9,6 +9,7 @@
     <None Remove="System\Migrations\Initial\Extensions\Initial_CreateExtension_citext.sql" />
     <None Remove="System\Migrations\Initial\Extensions\Initial_CreateExtension_uuid-ossp.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\Company\v_0_0_1_Mig_105_CreateTable_Company.sql" />
+    <None Remove="System\Migrations\Migration_v_0_0_1\Company\v_0_0_1_Mig_107_AlterTable_Company.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\Lookup\v_0_0_1_Mig_104_CreateLookup_CompanyType.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_103_AlterTable_User.sql" />
     <None Remove="System\Migrations\Migration_v_0_0_1\User\v_0_0_1_Mig_106_AlterTable_User.sql" />
@@ -24,6 +25,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="System\Migrations\Initial\Extensions\Initial_CreateExtension_uuid-ossp.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\Company\v_0_0_1_Mig_107_AlterTable_Company.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="System\Migrations\Migration_v_0_0_1\Company\v_0_0_1_Mig_105_CreateTable_Company.sql">
