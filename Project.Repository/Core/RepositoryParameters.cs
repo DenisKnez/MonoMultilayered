@@ -53,11 +53,14 @@ namespace Project.Repository.Core
             query = query.OrderBy(orderQuery);
         }
 
-        public void InitializeBaseFilter<TParameters, TFilter>(ref IQueryable<TEntity> query, TParameters parameters) where TParameters : IParameters<TFilter> where TFilter : BaseFilter
+        public void InitializeIBaseFilter<TIParameters, TFilter>(ref IQueryable<TEntity> query, TIParameters parameters) where TIParameters : IParameters<TFilter> where TFilter : IBaseFilter
         {
-            if (parameters.Filter.IsActive != null)
+            if (parameters.Filter != null)
             {
-                query = query.Where(entity => entity.IsActive == true);
+                if (parameters.Filter.IsActive != null)
+                {
+                    query = query.Where(entity => entity.IsActive == true);
+                }
             }
         }
     }

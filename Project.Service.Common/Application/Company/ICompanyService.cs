@@ -19,6 +19,6 @@ namespace Project.Service.Common
 
         Task<int> DeleteCompanyAsync(Guid id);
 
-        Task<IPagedList<CompanyModel>> FindCompanysAsync(Parameters<CompanyFilter> companyParameters);
+        Task<IPagedList<CompanyModel>> FindCompanysAsync(IParameters<CompanyFilter> companyIParameters);
     }
 }

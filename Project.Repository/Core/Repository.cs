@@ -3,7 +3,9 @@ using Project.Common;
 using Project.Common.System;
 using Project.DAL;
 using Project.Repository.Common;
+using Project.Repository.Extensions;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -60,7 +62,7 @@ namespace Project.Repository.Core
             if (entity != null) UnitOfWork.Context.Set<TEntity>().Remove(entity);
         }
 
-        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : BaseFilter
+        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TIParameters, TFilter>(TIParameters parameters, IQueryable<TEntity> query = null) where TIParameters : IParameters<TFilter> where TFilter : IBaseFilter
         {
             if (query == null)
             {
@@ -69,12 +71,14 @@ namespace Project.Repository.Core
 
             InitializeInclude(ref query, parameters.Fields);
             InitializeQueryDataShaping(ref query, parameters.Fields);
-            InitializeBaseFilter<TParameters, TFilter>(ref query, parameters);
+            InitializeIBaseFilter<TIParameters, TFilter>(ref query, parameters);
+
+            Debug.WriteLine("Find with no tracking: " + query.ToSql());
 
             return await PagedList<TEntity>.ToPagedListAsync(query.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
         }
 
-        public virtual async Task<IPagedList<TEntity>> FindAsync<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : BaseFilter
+        public virtual async Task<IPagedList<TEntity>> FindAsync<TIParameters, TFilter>(TIParameters parameters, IQueryable<TEntity> query = null) where TIParameters : IParameters<TFilter> where TFilter : IBaseFilter
         {
             if (query == null)
             {
@@ -83,7 +87,7 @@ namespace Project.Repository.Core
 
             InitializeInclude(ref query, parameters.Fields);
             InitializeQueryDataShaping(ref query, parameters.Fields);
-            InitializeBaseFilter<TParameters, TFilter>(ref query, parameters);
+            InitializeIBaseFilter<TIParameters, TFilter>(ref query, parameters);
 
             return await PagedList<TEntity>.ToPagedListAsync(query, parameters.PageNumber, parameters.PageSize);
         }

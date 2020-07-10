@@ -8,6 +8,6 @@ namespace Project.Repository.Common
 {
     public interface ICompanyRepository : IRepository<Company>
     {
-        Task<IPagedList<Company>> FindCompanyAsync(IParameters<CompanyFilter> companyParameters);
+        Task<IPagedList<Company>> FindCompanyAsync(IParameters<CompanyFilter> companyIParameters);
     }
 }

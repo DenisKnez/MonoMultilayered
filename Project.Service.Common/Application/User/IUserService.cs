@@ -19,6 +19,6 @@ namespace Project.Service.Common
 
         Task<int> DeleteUserAsync(Guid id);
 
-        Task<IPagedList<UserModel>> FindUsersAsync(IParameters<UserFilter> userParameters);
+        Task<IPagedList<UserModel>> FindUsersAsync(Parameters<UserFilter> userIParameters);
     }
 }

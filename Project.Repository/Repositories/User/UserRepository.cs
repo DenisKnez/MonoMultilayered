@@ -18,31 +18,31 @@ namespace Project.Repository
         {
         }
 
-        public Task<IPagedList<User>> FindUserAsync(IParameters<UserFilter> userParameters)
+        public Task<IPagedList<User>> FindUserAsync(Parameters<UserFilter> userIParameters)
         {
             IQueryable<User> query = UnitOfWork.Context.Set<User>();
 
-            InitializeFilter(ref query, userParameters);
-            InitializeSorting(ref query, userParameters.OrderBy);
+            InitializeFilter(ref query, userIParameters);
+            InitializeSorting(ref query, userIParameters.OrderBy);
 
-            return base.FindAsyncNoTracking<IParameters<UserFilter>, UserFilter>(userParameters, query);
+            return base.FindAsyncNoTracking<Parameters<UserFilter>, UserFilter>(userIParameters, query);
         }
 
-        public void InitializeFilter(ref IQueryable<User> query, IParameters<UserFilter> userParameters)
+        public void InitializeFilter(ref IQueryable<User> query, Parameters<UserFilter> userIParameters)
         {
-            if (userParameters.Filter == null)
+            if (userIParameters.Filter != null)
             {
-                if (!String.IsNullOrWhiteSpace(userParameters.Filter.Name))
+                if (!String.IsNullOrWhiteSpace(userIParameters.Filter.Name))
                 {
-                    query = query.Where(x => EF.Functions.Like(x.Name, $"%{userParameters.Filter.Name}%"));
+                    query = query.Where(user => EF.Functions.Like(user.Name, $"%{userIParameters.Filter.Name}%"));
                 }
-                if (userParameters.Filter.DateCreated != null)
+                if (userIParameters.Filter.DateCreated != null)
                 {
-                    query = query.Where(x => x.DateCreated < userParameters.Filter.DateCreated);
+                    query = query.Where(x => x.DateCreated < userIParameters.Filter.DateCreated);
                 }
             }
 
-            InitializeBaseFilter<IParameters<UserFilter>, UserFilter>(ref query, userParameters);
+            InitializeIBaseFilter<Parameters<UserFilter>, UserFilter>(ref query, userIParameters);
         }
     }
 }

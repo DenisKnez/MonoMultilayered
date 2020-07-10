@@ -17,24 +17,27 @@ namespace Project.Repository
         {
         }
 
-        public Task<IPagedList<Company>> FindCompanyAsync(IParameters<CompanyFilter> companyParameters)
+        public Task<IPagedList<Company>> FindCompanyAsync(IParameters<CompanyFilter> companyIParameters)
         {
             IQueryable<Company> query = UnitOfWork.Context.Set<Company>();
 
-            InitializeFilter(ref query, companyParameters);
-            InitializeSorting(ref query, companyParameters.OrderBy);
+            InitializeFilter(ref query, companyIParameters);
+            InitializeSorting(ref query, companyIParameters.OrderBy);
 
-            return base.FindAsync<IParameters<CompanyFilter>, CompanyFilter>(companyParameters, query);
+            return base.FindAsync<IParameters<CompanyFilter>, CompanyFilter>(companyIParameters, query);
         }
 
-        public void InitializeFilter(ref IQueryable<Company> query, IParameters<CompanyFilter> companyParameters)
+        public void InitializeFilter(ref IQueryable<Company> query, IParameters<CompanyFilter> companyIParameters)
         {
-            if (!string.IsNullOrWhiteSpace(companyParameters.Filter.Name))
+            if (companyIParameters.Filter != null)
             {
-                query = query.Where(x => EF.Functions.Like(x.Name, $"%{companyParameters.Filter.Name}%"));
+                if (!string.IsNullOrWhiteSpace(companyIParameters.Filter.Name))
+                {
+                    query = query.Where(x => EF.Functions.Like(x.Name, $"%{companyIParameters.Filter.Name}%"));
+                }
             }
 
-            InitializeBaseFilter<IParameters<CompanyFilter>, CompanyFilter>(ref query, companyParameters);
+            InitializeIBaseFilter<IParameters<CompanyFilter>, CompanyFilter>(ref query, companyIParameters);
         }
     }
 }

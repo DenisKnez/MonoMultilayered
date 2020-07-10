@@ -45,9 +45,9 @@ namespace Project.WebAPI
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanys([FromQuery] Parameters<CompanyFilter> companyParameters, string fields = "")
+        public async Task<IActionResult> GetCompanys([FromQuery] Parameters<CompanyFilter> companyIParameters, string fields = "")
         {
-            var companys = await CompanyService.FindCompanysAsync(companyParameters);
+            var companys = await CompanyService.FindCompanysAsync(companyIParameters);
             var restCompanys = Mapper.Map<PagedList<CompanyRestModel>>(companys);
 
             // change this in the snippet to be like single entity

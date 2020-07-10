@@ -32,9 +32,9 @@ namespace Project.Service
             return userModel;
         }
 
-        public async Task<IPagedList<UserModel>> FindUsersAsync(IParameters<UserFilter> userParameters)
+        public async Task<IPagedList<UserModel>> FindUsersAsync(Parameters<UserFilter> userIParameters)
         {
-            var users = await UserRepository.FindUserAsync(userParameters);
+            var users = await UserRepository.FindUserAsync(userIParameters);
             return Mapper.Map<PagedList<User>, PagedList<UserModel>>((PagedList<User>)users);
         }
 

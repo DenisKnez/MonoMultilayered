@@ -32,9 +32,9 @@ namespace Project.Service
             return companyModel;
         }
 
-        public async Task<IPagedList<CompanyModel>> FindCompanysAsync(Parameters<CompanyFilter> companyParameters)
+        public async Task<IPagedList<CompanyModel>> FindCompanysAsync(IParameters<CompanyFilter> companyIParameters)
         {
-            var companys = await CompanyRepository.FindCompanyAsync(companyParameters);
+            var companys = await CompanyRepository.FindCompanyAsync(companyIParameters);
             return Mapper.Map<PagedList<Company>, PagedList<CompanyModel>>((PagedList<Company>)companys);
         }
 

@@ -8,6 +8,6 @@ namespace Project.Repository.Common
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<IPagedList<User>> FindUserAsync(IParameters<UserFilter> userParameters);
+        Task<IPagedList<User>> FindUserAsync(Parameters<UserFilter> userIParameters);
     }
 }

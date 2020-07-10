@@ -45,9 +45,9 @@ namespace Project.WebAPI
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery] Parameters<UserFilter> userParameters, string fields = "")
+        public async Task<IActionResult> GetUsers([FromQuery] Parameters<UserFilter> userIParameters, string fields = "")
         {
-            var users = await UserService.FindUsersAsync(userParameters);
+            var users = await UserService.FindUsersAsync(userIParameters);
 
             var restUsers = Mapper.Map<PagedList<UserRestModel>>(users);
 
