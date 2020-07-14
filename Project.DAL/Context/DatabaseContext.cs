@@ -4,17 +4,25 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Project.DAL.EntityModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Project.DAL.ContextConfigurations;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.Extensions.Options;
 
 namespace Project.DAL.Context
 {
-    public partial class DatabaseContext : DbContext
+    /// <summary>
+    /// IdentityDbContext
+    /// </summary>
+    public partial class DatabaseContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public DatabaseContext()
-        {
-        }
+        //public DatabaseContext()
+        //{
+        //}
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options)
-            : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions)
+            : base(options, operationalStoreOptions)
         {
         }
 
@@ -25,103 +33,14 @@ namespace Project.DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.HasPostgresExtension("citext")
                 .HasPostgresExtension("uuid-ossp");
 
-            modelBuilder.Entity<Company>(entity =>
-            {
-                entity.HasIndex(e => e.Name)
-                    .HasName("uc_company_name")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasDefaultValueSql("uuid_generate_v1()");
-
-                entity.Property(e => e.Address).HasColumnType("citext");
-
-                entity.Property(e => e.Email).HasColumnType("citext");
-
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("true");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnType("citext");
-
-                entity.Property(e => e.Phone).HasColumnType("citext");
-
-                entity.HasOne(d => d.CompanyType)
-                    .WithMany(p => p.Company)
-                    .HasForeignKey(d => d.CompanyTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_company_companytype");
-            });
-
-            modelBuilder.Entity<CompanyType>(entity =>
-            {
-                entity.HasIndex(e => e.Abrv)
-                    .HasName("index_companytype_abrv")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasDefaultValueSql("uuid_generate_v1()");
-
-                entity.Property(e => e.Abrv)
-                    .IsRequired()
-                    .HasColumnType("citext");
-
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("true");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnType("citext");
-            });
-
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.Property(e => e.Id).HasDefaultValueSql("uuid_generate_v1()");
-
-                entity.Property(e => e.DateCreated).HasDefaultValueSql("now()");
-
-                entity.Property(e => e.DateJoined).HasColumnType("date");
-
-                entity.Property(e => e.DateOfBirth).HasColumnType("date");
-
-                entity.Property(e => e.DateUpdated).HasDefaultValueSql("now()");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnType("citext");
-
-                entity.Property(e => e.IsActive)
-                    .IsRequired()
-                    .HasDefaultValueSql("true");
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasColumnType("citext");
-
-                entity.Property(e => e.Name).IsRequired();
-
-                entity.Property(e => e.Salary).HasColumnType("numeric(11,2)");
-
-                entity.HasOne(d => d.Company)
-                    .WithMany(p => p.User)
-                    .HasForeignKey(d => d.CompanyId)
-                    .HasConstraintName("fk_user_company");
-            });
-
-            modelBuilder.Entity<VersionInfo>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.HasIndex(e => e.Version)
-                    .HasName("UC_Version")
-                    .IsUnique();
-
-                entity.Property(e => e.Description).HasMaxLength(1024);
-            });
+            modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+            modelBuilder.ApplyConfiguration(new CompanyTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new VersionInfoConfiguration());
 
             OnModelCreatingPartial(modelBuilder);
         }

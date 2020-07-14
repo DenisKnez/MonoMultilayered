@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentMigrator.Runner;
-using Microsoft.AspNetCore.Http;
+﻿using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Project.DAL.System;
+using System;
 
 namespace Project.WebAPI.Controllers
 {
@@ -68,7 +64,5 @@ namespace Project.WebAPI.Controllers
 
             runner.ListMigrations();
         }
-
-
     }
 }
