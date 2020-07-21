@@ -5,7 +5,7 @@ namespace Project.Common
     /// <summary>
     /// Every filter needs to inherit this class, it provides properties that all entities have
     /// </summary>
-    public interface IBaseFilter
+    public class BaseFilter : IBaseFilter
     {
         public DateTime? DateCreated { get; set; }
 

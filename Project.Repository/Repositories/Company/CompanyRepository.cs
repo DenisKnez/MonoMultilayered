@@ -5,51 +5,39 @@ using Project.Common.System;
 using Project.DAL.EntityModels;
 using Project.Repository.Common;
 using Project.Repository.Core;
-using Project.Repository.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Linq.Dynamic;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Repository
 {
-
     public class CompanyRepository : Repository<Company>, ICompanyRepository
     {
         public CompanyRepository(IUnitOfWork uow) : base(uow)
         {
-
         }
 
-        public Task<IPagedList<Company>> FindCompanyAsync(IParameters<ICompanyFilter> companyParameters)
+        public Task<IPagedList<Company>> FindCompanyAsync(IParameters<CompanyFilter> companyIParameters)
         {
             IQueryable<Company> query = UnitOfWork.Context.Set<Company>();
 
+            InitializeFilter(ref query, companyIParameters);
+            InitializeSorting(ref query, companyIParameters.OrderBy);
 
-            InitializeFilter(ref query, companyParameters);
-            InitializeSorting(ref query, companyParameters.OrderBy);
-
-
-             return base.FindAsync<IParameters<ICompanyFilter>, ICompanyFilter>(companyParameters, query);
+            return base.FindAsync<IParameters<CompanyFilter>, CompanyFilter>(companyIParameters, query);
         }
 
-
-        public void InitializeFilter(ref IQueryable<Company> query, IParameters<ICompanyFilter> companyParameters)
+        public void InitializeFilter(ref IQueryable<Company> query, IParameters<CompanyFilter> companyIParameters)
         {
-
-            if (!string.IsNullOrWhiteSpace(companyParameters.Filter.Name))
+            if (companyIParameters.Filter != null)
             {
-                query = query.Where(x => EF.Functions.Like(x.Name, $"%{companyParameters.Filter.Name}%"));
+                if (!string.IsNullOrWhiteSpace(companyIParameters.Filter.Name))
+                {
+                    query = query.Where(x => EF.Functions.Like(x.Name, $"%{companyIParameters.Filter.Name}%"));
+                }
             }
 
-            InitializeBaseFilter<IParameters<ICompanyFilter>, ICompanyFilter>(ref query, companyParameters);
-
+            InitializeIBaseFilter<IParameters<CompanyFilter>, CompanyFilter>(ref query, companyIParameters);
         }
     }
-
 }

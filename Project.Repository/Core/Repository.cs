@@ -1,20 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Project.Common;
 using Project.Common.System;
 using Project.DAL;
-using Project.DAL.EntityModels;
 using Project.Repository.Common;
+using Project.Repository.Extensions;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using System.Linq.Dynamic.Core;
-using Project.Common;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-
 
 namespace Project.Repository.Core
 {
@@ -48,8 +41,7 @@ namespace Project.Repository.Core
             entity.DateUpdated = DateTime.UtcNow;
         }
 
-        #endregion
-
+        #endregion Entity Setup Methods
 
         public virtual async Task DeactivateAsync(Guid id)
         {
@@ -70,24 +62,7 @@ namespace Project.Repository.Core
             if (entity != null) UnitOfWork.Context.Set<TEntity>().Remove(entity);
         }
 
-        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter
-        {
-            if(query == null)
-            {
-                query = UnitOfWork.Context.Set<TEntity>();
-            }
-
-            InitializeInclude(ref query, parameters.Fields);
-            InitializeQueryDataShaping(ref query, parameters.Fields);
-            InitializeBaseFilter<TParameters, TFilter>(ref query, parameters);
-
-
-            return await PagedList<TEntity>.ToPagedListAsync(query.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
-
-
-        }
-
-        public virtual async Task<IPagedList<TEntity>> FindAsync<TParameters, TFilter>(TParameters parameters, IQueryable<TEntity> query = null) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter
+        public virtual async Task<IPagedList<TEntity>> FindAsyncNoTracking<TIParameters, TFilter>(TIParameters parameters, IQueryable<TEntity> query = null) where TIParameters : IParameters<TFilter> where TFilter : IBaseFilter
         {
             if (query == null)
             {
@@ -96,17 +71,32 @@ namespace Project.Repository.Core
 
             InitializeInclude(ref query, parameters.Fields);
             InitializeQueryDataShaping(ref query, parameters.Fields);
-            InitializeBaseFilter<TParameters, TFilter>(ref query, parameters);
+            InitializeIBaseFilter<TIParameters, TFilter>(ref query, parameters);
+
+            Debug.WriteLine("Find with no tracking: " + query.ToSql());
+
+            return await PagedList<TEntity>.ToPagedListAsync(query.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
+        }
+
+        public virtual async Task<IPagedList<TEntity>> FindAsync<TIParameters, TFilter>(TIParameters parameters, IQueryable<TEntity> query = null) where TIParameters : IParameters<TFilter> where TFilter : IBaseFilter
+        {
+            if (query == null)
+            {
+                query = UnitOfWork.Context.Set<TEntity>();
+            }
+
+            InitializeInclude(ref query, parameters.Fields);
+            InitializeQueryDataShaping(ref query, parameters.Fields);
+            InitializeIBaseFilter<TIParameters, TFilter>(ref query, parameters);
 
             return await PagedList<TEntity>.ToPagedListAsync(query, parameters.PageNumber, parameters.PageSize);
-
         }
 
         public virtual async Task<TEntity> GetAsyncNoTracking(Guid id, string fieldsString = "")
         {
             var set = UnitOfWork.Context.Set<TEntity>().AsNoTracking().AsQueryable();
 
-            InitializeQueryDataShaping(ref set, fieldsString); 
+            InitializeQueryDataShaping(ref set, fieldsString);
             return await set.SingleOrDefaultAsync(x => x.Id == id);
         }
 
@@ -125,9 +115,5 @@ namespace Project.Repository.Core
             UnitOfWork.Context.Update(entity);
             return entity;
         }
-
-
-
     }
-
 }

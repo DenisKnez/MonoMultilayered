@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Project.Common
+﻿namespace Project.Common
 {
     public interface IParameters<TFilter>
     {

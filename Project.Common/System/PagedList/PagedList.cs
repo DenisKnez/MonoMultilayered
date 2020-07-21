@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Common.System
 {
-    public class PagedList<T> : List<T>, IPagedList<T>
+    public class PagedList<TEntity> : List<TEntity>, IPagedList<TEntity>
     {
         public int CurrentPage { get; private set; }
         public int TotalPages { get; private set; }
@@ -17,7 +16,7 @@ namespace Project.Common.System
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
 
-        public PagedList(List<T> items, int count, int pageNumber, int pageSize)
+        public PagedList(List<TEntity> items, int count, int pageNumber, int pageSize)
         {
             TotalCount = TotalCount;
             PageSize = pageSize;
@@ -25,20 +24,14 @@ namespace Project.Common.System
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
             AddRange(items);
-
         }
 
-
-        public async static Task<IPagedList<T>> ToPagedListAsync(IQueryable<T> source, int pageNumber, int pageSize)
+        public async static Task<IPagedList<TEntity>> ToPagedListAsync(IQueryable<TEntity> query, int pageNumber, int pageSize)
         {
-            var count = source.Count();
-            var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var count = query.Count();
+            var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            return new PagedList<T>(items, count, pageNumber, pageSize);
+            return new PagedList<TEntity>(items, count, pageNumber, pageSize);
         }
-
-
     }
-
-
 }

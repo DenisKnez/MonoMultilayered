@@ -3,8 +3,6 @@ using Project.Common.Filters;
 using Project.Common.System;
 using Project.Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Service.Common
@@ -21,7 +19,6 @@ namespace Project.Service.Common
 
         Task<int> DeleteUserAsync(Guid id);
 
-        Task<IPagedList<UserModel>> FindUsersAsync(IParameters<IUserFilter> userParameters);
-
+        Task<IPagedList<UserModel>> FindUsersAsync(Parameters<UserFilter> userIParameters);
     }
 }

@@ -1,12 +1,11 @@
-﻿using Project.DAL;
+﻿using Project.Common;
+using Project.DAL;
 using Project.Repository.Common;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Text;
-using System.Linq.Dynamic.Core;
-using Project.Common;
 
 namespace Project.Repository.Core
 {
@@ -39,7 +38,6 @@ namespace Project.Repository.Core
                 var propertyFromQueryName = param.Split(" ")[0];
                 var objectProperty = properyInfos.FirstOrDefault(pi => pi.Name.Equals(propertyFromQueryName, StringComparison.InvariantCultureIgnoreCase));
 
-
                 if (objectProperty == null)
                 {
                     continue;
@@ -48,24 +46,22 @@ namespace Project.Repository.Core
                 var sortingOrder = param.EndsWith(" desc") ? "descending" : "ascending";
 
                 orderQueryBuilder.Append($"{objectProperty.Name.ToString()} {sortingOrder}, ");
-
             }
 
             var orderQuery = orderQueryBuilder.ToString().TrimEnd(',', ' ');
 
             query = query.OrderBy(orderQuery);
-
         }
 
-
-        public void InitializeBaseFilter<TParameters, TFilter>(ref IQueryable<TEntity> query, TParameters parameters) where TParameters : IParameters<TFilter> where TFilter : IBaseFilter
+        public void InitializeIBaseFilter<TIParameters, TFilter>(ref IQueryable<TEntity> query, TIParameters parameters) where TIParameters : IParameters<TFilter> where TFilter : IBaseFilter
         {
-            if (parameters.Filter.IsActive != null)
+            if (parameters.Filter != null)
             {
-                query = query.Where(entity => entity.IsActive == true);
+                if (parameters.Filter.IsActive != null)
+                {
+                    query = query.Where(entity => entity.IsActive == true);
+                }
             }
         }
-
-
     }
 }
