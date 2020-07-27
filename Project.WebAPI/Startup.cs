@@ -1,45 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentMigrator.Runner;
+﻿using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Ninject;
 using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
-using Project.DAL;
 using Project.DAL.Context;
 using Project.MVC.Ninject;
-using Project.Repository;
-using Project.Service;
-using Project.Service.Common;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 
 namespace Project.WebAPI
 {
     public class Startup
     {
+        private readonly string CorsName = "ReactFrontEnd";
+
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
         private IKernel Kernel { get; set; }
 
         private object Resolve(Type type) => Kernel.Get(type);
+
         private object RequestScope(IContext context) => scopeProvider.Value;
 
         private sealed class Scope : DisposableObject { }
-
 
         public Startup(IConfiguration configuration)
         {
@@ -51,16 +43,29 @@ namespace Project.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: CorsName, builder =>
+                {
+                    builder.AllowAnyOrigin();
+                });
+            });
 
-            //ninject 
+            //ninject
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope(), Configuration.GetConnectionString("PostgreDatabase"));
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
 
+            // add newtonsoftjson to the endpoint
             services.AddControllers().AddNewtonsoftJson();
+
+            // migrations
             services.AddFluentMigratorCore();
+
+            // configuraction for the migration runner
             services.ConfigureRunner(rb =>
                 rb.AddPostgres()
                     .WithGlobalConnectionString(Configuration.GetConnectionString("PostgreDatabase"))
@@ -68,9 +73,9 @@ namespace Project.WebAPI
                     .For.Migrations()
                     .For.EmbeddedResources());
 
+            // logging for the fluent migrator
             services.AddLogging(lb => lb.AddFluentMigratorConsole());
 
-            //services.AddCors(options => options.AddPolicy("policy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
@@ -87,12 +92,12 @@ namespace Project.WebAPI
                 app.UseHsts();
             }
 
+            app.UseCors(CorsName);
 
             this.Kernel = this.RegisterApplicationComponents(app);
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            //app.UseCors("policy");
             app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>
@@ -101,8 +106,11 @@ namespace Project.WebAPI
             });
         }
 
-
-
+        /// <summary>
+        /// Setting up ninject DI
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
         private IKernel RegisterApplicationComponents(IApplicationBuilder app)
         {
             // IKernelConfiguration config = new KernelConfiguration();
@@ -116,14 +124,11 @@ namespace Project.WebAPI
 
             var kernel = new StandardKernel(settings);
 
-
             // Register application services
             foreach (var ctrlType in app.GetControllerTypes())
             {
                 kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
             }
-
-
 
             // This is where our bindings are configurated
             kernel.Bind<DatabaseContext>().ToSelf().InScope(RequestScope).WithConstructorArgument("options", new DbContextOptionsBuilder<DatabaseContext>().UseNpgsql(Configuration.GetConnectionString("PostgreDatabase")).Options);
@@ -135,6 +140,5 @@ namespace Project.WebAPI
 
             return kernel;
         }
-
     }
 }
