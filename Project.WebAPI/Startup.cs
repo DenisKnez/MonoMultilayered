@@ -59,8 +59,13 @@ namespace Project.WebAPI
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
 
+            // add newtonsoftjson to the endpoint
             services.AddControllers().AddNewtonsoftJson();
+
+            // migrations
             services.AddFluentMigratorCore();
+
+            // configuraction for the migration runner
             services.ConfigureRunner(rb =>
                 rb.AddPostgres()
                     .WithGlobalConnectionString(Configuration.GetConnectionString("PostgreDatabase"))
@@ -68,9 +73,9 @@ namespace Project.WebAPI
                     .For.Migrations()
                     .For.EmbeddedResources());
 
+            // logging for the fluent migrator
             services.AddLogging(lb => lb.AddFluentMigratorConsole());
 
-            //services.AddCors(options => options.AddPolicy("policy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
@@ -93,7 +98,6 @@ namespace Project.WebAPI
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            //app.UseCors("policy");
             app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>
@@ -102,6 +106,11 @@ namespace Project.WebAPI
             });
         }
 
+        /// <summary>
+        /// Setting up ninject DI
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
         private IKernel RegisterApplicationComponents(IApplicationBuilder app)
         {
             // IKernelConfiguration config = new KernelConfiguration();
