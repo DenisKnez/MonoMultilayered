@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoWrapper.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 using Project.Common;
 using Project.Common.Filters;
@@ -45,13 +46,15 @@ namespace Project.WebAPI
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanys([FromQuery] Parameters<CompanyFilter> companyIParameters, string fields = "")
+        public async Task<ApiResponse> GetCompanys([FromQuery] Parameters<CompanyFilter> companyIParameters, string fields = "")
         {
             var companys = await CompanyService.FindCompanysAsync(companyIParameters);
+
             var restCompanys = Mapper.Map<PagedList<CompanyRestModel>>(companys);
 
-            // change this in the snippet to be like single entity
-            return Ok(DataShaper.ShapeData(restCompanys, fields));
+            object response = DataShaper.PaginatedShapeData(restCompanys, fields);
+
+            return new ApiResponse(response);
         }
 
         [HttpPost]

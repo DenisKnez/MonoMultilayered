@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="AutoWrapper.Core" Version="4.3.0" />
     <PackageReference Include="FluentMigrator" Version="3.2.7" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
