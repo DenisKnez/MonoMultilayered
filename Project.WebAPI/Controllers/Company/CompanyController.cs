@@ -8,6 +8,7 @@ using Project.Model;
 using Project.Service.Common;
 using Project.WebAPI.System;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Project.WebAPI
@@ -27,6 +28,23 @@ namespace Project.WebAPI
 
         public IMapper Mapper { get; }
         public ICompanyService CompanyService { get; }
+
+        [HttpGet("leastEmployees/{numberOfCompanies}")]
+        public async Task<IActionResult> FindCompaniesWithLeastAmountOfEmployeesAsync(int numberOfCompanies = 0)
+        {
+            var companies = await CompanyService.FindCompaniesWithLeastAmountOfEmployeesAsync(numberOfCompanies);
+
+            if (companies != null)
+            {
+                List<CompanyLeastAmountEmployeesRestModel> restCompany = Mapper.Map<List<CompanyLeastAmountEmployeesRestModel>>(companies);
+
+                return Ok(restCompany);
+            }
+            else
+            {
+                return NotFound("There were no companies found");
+            }
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCompanyAsync(Guid id, string fields = "")
@@ -99,6 +117,12 @@ namespace Project.WebAPI
         {
             await CompanyService.DeleteCompanyAsync(id);
         }
+    }
+
+    public class CompanyLeastAmountEmployeesRestModel
+    {
+        public string Name { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class CompanyTypeRestModel : BaseRestModel

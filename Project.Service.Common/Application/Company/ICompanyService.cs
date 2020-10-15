@@ -3,12 +3,15 @@ using Project.Common.Filters;
 using Project.Common.System;
 using Project.Model;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Project.Service.Common
 {
     public interface ICompanyService
     {
+        Task<List<LeastEmployeesCompanyModel>> FindCompaniesWithLeastAmountOfEmployeesAsync(int numberOfCompanies);
+
         Task<ICompanyModel> GetCompanyNoTrackingAsync(Guid id);
 
         Task<ICompanyModel> AddCompanyAsync(ICompanyModel companyModel);

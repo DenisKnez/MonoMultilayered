@@ -7,6 +7,7 @@ using Project.Model;
 using Project.Repository.Common;
 using Project.Service.Common;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Project.Service
@@ -23,6 +24,20 @@ namespace Project.Service
         public IMapper Mapper { get; }
         public ICompanyRepository CompanyRepository { get; }
         public IUnitOfWork UnitOfWork { get; }
+
+        public async Task<List<LeastEmployeesCompanyModel>> FindCompaniesWithLeastAmountOfEmployeesAsync(int numberOfCompanies)
+        {
+            const int defaultNumberOfCompaniesReturned = 10;
+
+            if (numberOfCompanies == 0)
+            {
+                return await CompanyRepository.FindCompaniesWithLeastAmountOfEmployeesAsync(defaultNumberOfCompaniesReturned);
+            }
+            else
+            {
+                return await CompanyRepository.FindCompaniesWithLeastAmountOfEmployeesAsync(numberOfCompanies);
+            }
+        }
 
         public async Task<ICompanyModel> GetCompanyNoTrackingAsync(Guid id)
         {

@@ -2,11 +2,6 @@
 using Project.Common.System;
 using Project.Model;
 using Project.WebAPI.AutoMapper.System;
-using Project.WebAPI.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Project.WebAPI
 {
@@ -22,10 +17,11 @@ namespace Project.WebAPI
                 .ForMember(source => source.DateUpdated, dest => dest.Ignore())
                 .ForMember(source => source.IsActive, dest => dest.Ignore());
 
-
             CreateMap<PagedList<CompanyModel>, PagedList<CompanyRestModel>>().ConvertUsing<PagedListConverter<CompanyModel, CompanyRestModel>>();
 
+            CreateMap<LeastEmployeesCompanyModel, CompanyLeastAmountEmployeesRestModel>()
+                .ForMember(source => source.Name, dest => dest.MapFrom(x => x.Name))
+                .ForMember(source => source.Id, dest => dest.MapFrom(x => x.Id));
         }
-
     }
 }

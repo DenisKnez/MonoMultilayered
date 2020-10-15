@@ -3,8 +3,12 @@ using Project.Common;
 using Project.Common.Filters;
 using Project.Common.System;
 using Project.DAL.EntityModels;
+using Project.Model;
 using Project.Repository.Common;
 using Project.Repository.Core;
+using Project.Repository.Extensions;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -15,6 +19,39 @@ namespace Project.Repository
     {
         public CompanyRepository(IUnitOfWork uow) : base(uow)
         {
+        }
+
+        public async Task<List<LeastEmployeesCompanyModel>> FindCompaniesWithLeastAmountOfEmployeesAsync(int numberOfCompanies)
+        {
+            IQueryable<Company> query = UnitOfWork.Context.Set<Company>();
+
+            var something = query.Include(x => x.User)
+                             .OrderBy(x => x.User.Count)
+                             .Where(x => x.IsActive == true)
+                             .Select(x => new LeastEmployeesCompanyModel
+                             {
+                                 Name = x.Name,
+                                 Id = x.Id
+                             })
+                             .Take(numberOfCompanies)
+                             .AsNoTracking()
+                             .ToSql();
+
+            Debug.WriteLine("something: " + something);
+
+            var companies = await query.Include(x => x.User)
+                                         .OrderBy(x => x.User.Count)
+                                         .Where(x => x.IsActive == true)
+                                         .Select(x => new LeastEmployeesCompanyModel
+                                         {
+                                             Name = x.Name,
+                                             Id = x.Id
+                                         })
+                                         .Take(numberOfCompanies)
+                                         .AsNoTracking()
+                                         .ToListAsync();
+
+            return companies;
         }
 
         public Task<IPagedList<Company>> FindCompanyAsync(IParameters<CompanyFilter> companyIParameters)
