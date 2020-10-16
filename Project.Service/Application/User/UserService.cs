@@ -42,6 +42,8 @@ namespace Project.Service
         {
             var user = Mapper.Map<User>(userModel);
 
+            user.DateJoined = DateTime.Now;
+
             var addedUser = await UserRepository.AddAsync(user);
             await UnitOfWork.CommitAsync();
 
