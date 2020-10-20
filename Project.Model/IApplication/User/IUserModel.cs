@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Project.Model
 {
@@ -14,7 +12,7 @@ namespace Project.Model
 
         public decimal? Salary { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public DateTime DateJoined { get; set; }
 

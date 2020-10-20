@@ -47,7 +47,7 @@ namespace Project.Service
             var addedUser = await UserRepository.AddAsync(user);
             await UnitOfWork.CommitAsync();
 
-            return Mapper.Map<IUserModel>(addedUser);
+            return Mapper.Map<UserModel>(addedUser);
         }
 
         public async Task<IUserModel> UpdateUserAsync(IUserModel userModel)
