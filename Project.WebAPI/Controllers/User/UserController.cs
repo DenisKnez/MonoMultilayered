@@ -128,7 +128,9 @@ namespace Project.WebAPI
 
         public DateTime DateOfBirth { get; set; }
 
-        public DateTime DateJoined { get; set; }
+        public DateTime? DateJoined { get; set; }
+
+        public Guid CompanyId { get; set; }
 
         public CompanyRestModel Company { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using AutoWrapper;
 using FluentMigrator.Runner;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,7 @@ using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Project.DAL.Context;
 using Project.MVC.Ninject;
+using Project.WebAPI.FluentValidation.User;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -78,7 +80,7 @@ namespace Project.WebAPI
             // logging for the fluent migrator
             services.AddLogging(lb => lb.AddFluentMigratorConsole());
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserValidator>()).SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
