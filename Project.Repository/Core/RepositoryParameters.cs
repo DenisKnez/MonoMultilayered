@@ -16,7 +16,10 @@ namespace Project.Repository.Core
         /// </summary>
         /// <param name="query"></param>
         /// <param name="orderByQueryString"></param>
-        /// <param name="defaultSort">If default sort is true sorting will be done by id, use this when you don't implement default sort</param>
+        /// <param name="defaultSort">
+        /// If default sort is true sorting will be done by id, use this when you don't implement
+        /// default sort
+        /// </param>
         public virtual void InitializeSorting(ref IQueryable<TEntity> query, string orderByQueryString)
         {
             if (!query.Any() || string.IsNullOrWhiteSpace(orderByQueryString))

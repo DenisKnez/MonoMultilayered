@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoWrapper.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 using Project.Common;
 using Project.Common.Filters;
@@ -64,7 +63,7 @@ namespace Project.WebAPI
         }
 
         [HttpGet]
-        public async Task<ApiResponse> GetCompanys([FromQuery] Parameters<CompanyFilter> companyIParameters, string fields = "")
+        public async Task<IActionResult> GetCompanys([FromQuery] Parameters<CompanyFilter> companyIParameters, string fields = "")
         {
             var companys = await CompanyService.FindCompanysAsync(companyIParameters);
 
@@ -72,7 +71,7 @@ namespace Project.WebAPI
 
             object response = DataShaper.PaginatedShapeData(restCompanys, fields);
 
-            return new ApiResponse(response);
+            return Ok(response);
         }
 
         [HttpPost]
