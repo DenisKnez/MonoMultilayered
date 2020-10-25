@@ -51,7 +51,7 @@ namespace Project.WebAPI
 
             var restUsers = Mapper.Map<PagedList<UserRestModel>>(users);
 
-            return Ok(DataShaper.ShapeData(restUsers, fields));
+            return Ok(DataShaper.PaginatedShapeData(restUsers, fields));
         }
 
         [HttpPost]

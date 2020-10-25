@@ -60,7 +60,7 @@ namespace Project.WebAPI.System
             return shapedData;
         }
 
-        /// <summary> Returns the itmes inside the list with properties that are passed in the
+        /// <summary> Returns the items inside the list with properties that are passed in the
         /// fields parameter the rest are removed </summary> <param name="pagedList" <param
         /// name="fields"></param> <returns></returns>
         public object PaginatedShapeData(PagedList<T> pagedList, string fields)
