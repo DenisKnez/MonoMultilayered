@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.DAL;
-using Project.Repository.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace Project.Repository.Core
 {
@@ -77,7 +74,6 @@ namespace Project.Repository.Core
             return Expression.MemberInit(Expression.New(type), bindings);
         }
 
-
         /// <summary>
         /// Add includes for fields provided, if no fields are provided includes all fields
         /// </summary>
@@ -94,10 +90,9 @@ namespace Project.Repository.Core
             {
                 InitializeIncludeAll(ref query);
             }
-
         }
 
-        private  void InitializeIncludeAll(ref IQueryable<TEntity> query)
+        private void InitializeIncludeAll(ref IQueryable<TEntity> query)
         {
             PropertyInfo[] properties = typeof(TEntity).GetProperties();
 
@@ -119,9 +114,7 @@ namespace Project.Repository.Core
                         {
                             query = query.Include(property.Name);
                         }
-
                     }
-
                 }
             }
         }
@@ -142,37 +135,31 @@ namespace Project.Repository.Core
                     var property = properties.FirstOrDefault(property =>
                            property.PropertyType.GetInterfaces().Contains(typeof(IBaseEntity))
                            &&
-                           property.Name.Equals(nestedField[0].Trim(), StringComparison.InvariantCultureIgnoreCase));
-
+                           property.Name.Equals(nestedField[0].Trim(), StringComparison.OrdinalIgnoreCase));
 
                     var nestedProperties = property.PropertyType.GetProperties();
-
 
                     var nestedProperty = nestedProperties.FirstOrDefault(property =>
                            property.PropertyType.GetInterfaces().Contains(typeof(IBaseEntity))
                            &&
-                           property.Name.Equals(nestedField[1].Trim(), StringComparison.InvariantCultureIgnoreCase));
+                           property.Name.Equals(nestedField[1].Trim(), StringComparison.OrdinalIgnoreCase));
 
-
-                    if(property == null || nestedProperty == null)
+                    if (property == null || nestedProperty == null)
                     {
                         continue;
                     }
                     else
                     {
-                        query = query.Include(field);
+                        query = query.Include(property.Name);
                     }
-
-
                 }
                 else
                 {
-                     var property = properties
-                        .FirstOrDefault(property =>
-                            property.PropertyType.GetInterfaces().Contains(typeof(IBaseEntity))
-                            &&
-                            property.Name.Equals(field.Trim(), StringComparison.InvariantCultureIgnoreCase));
-
+                    var property = properties
+                       .FirstOrDefault(property =>
+                           property.PropertyType.GetInterfaces().Contains(typeof(IBaseEntity))
+                           &&
+                           property.Name.Equals(field.Trim(), StringComparison.OrdinalIgnoreCase));
 
                     if (property == null)
                     {
@@ -180,9 +167,8 @@ namespace Project.Repository.Core
                     }
                     else
                     {
-                        query = query.Include(field);
+                        query = query.Include(property.Name);
                     }
-
                 }
             }
         }
