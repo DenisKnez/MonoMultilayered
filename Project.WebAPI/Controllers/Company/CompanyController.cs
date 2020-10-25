@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Project.WebAPI
 {
-    [Route("api/companys")]
+    [Route("api/companies")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
