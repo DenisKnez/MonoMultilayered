@@ -15,7 +15,7 @@ namespace Project.DAL.EntityModels
         public string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
         public decimal? Salary { get; set; }
-        public DateTime DateJoined { get; set; }
+        public DateTime? DateJoined { get; set; }
         public Guid? CompanyId { get; set; }
 
         public virtual Company Company { get; set; }
