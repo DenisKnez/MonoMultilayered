@@ -1,8 +1,6 @@
 ﻿using Ninject.Modules;
 using Project.Service.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Project.Service.Twitch;
 
 namespace Project.Service
 {
@@ -12,6 +10,7 @@ namespace Project.Service
         {
             Kernel.Bind<IUserService>().To<UserService>();
             Kernel.Bind<ICompanyService>().To<CompanyService>();
+            Kernel.Bind<ITwitchAuthenticationService>().To<TwitchAuthenticationService>();
         }
     }
 }
