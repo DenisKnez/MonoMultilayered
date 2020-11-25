@@ -15,6 +15,7 @@ using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Project.DAL.Context;
 using Project.MVC.Ninject;
+using Project.Service.Twitch;
 using Project.WebAPI.FluentValidation.User;
 using System;
 using System.Linq;
@@ -46,6 +47,18 @@ namespace Project.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // TWITCH API AUTH
+            services.AddAuthentication()
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "api/TwitchAuthentication/twitch-login";
+                })
+                .AddTwitch("twitch", options =>
+                {
+                    options.ClientId = Configuration.GetSection("TwitchAuth")["ClientId"];
+                    options.ClientSecret = Configuration.GetSection("TwitchAuth")["ClientSecret"];
+                });
+
             //CORS
             services.AddCors(options =>
             {
@@ -79,6 +92,12 @@ namespace Project.WebAPI
 
             // logging for the fluent migrator
             services.AddLogging(lb => lb.AddFluentMigratorConsole());
+
+            // http
+
+            services.AddHttpClient<ITwitchAuthenticationService, TwitchAuthenticationService>(options =>
+            {
+            });
 
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserValidator>()).SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
