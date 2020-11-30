@@ -47,6 +47,8 @@ namespace Project.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string scope = "channel:read:subscriptions";
+
             // TWITCH API AUTH
             services.AddAuthentication()
                 .AddCookie(options =>
@@ -57,6 +59,7 @@ namespace Project.WebAPI
                 {
                     options.ClientId = Configuration.GetSection("TwitchAuth")["ClientId"];
                     options.ClientSecret = Configuration.GetSection("TwitchAuth")["ClientSecret"];
+                    options.AuthorizationEndpoint = $"https://id.twitch.tv/oauth2/authorize?response_type=code&scope=${scope}";
                 });
 
             //CORS
@@ -92,7 +95,7 @@ namespace Project.WebAPI
 
             // logging for the fluent migrator
             services.AddLogging(lb => lb.AddFluentMigratorConsole());
-
+            services.AddTransient(s => s.GetService<HttpContext>().User);
             // http
 
             services.AddHttpClient<ITwitchAuthenticationService, TwitchAuthenticationService>(options =>
