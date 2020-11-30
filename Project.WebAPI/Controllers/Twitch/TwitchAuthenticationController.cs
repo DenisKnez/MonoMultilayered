@@ -41,15 +41,14 @@ namespace Project.WebAPI.Controllers.Twitch
         }
 
         [HttpPost("twitch-code")]
-        public async Task<IActionResult> TwitchCodeResolution([FromHeader] string code)
+        public async Task<IActionResult> TwitchCodeResolution([FromBody]string code)
         {
             string result = await TwitchAuthenticationService.ExchangeCodeForTokenAsync(code);
-
             return Ok("");
         }
 
         [HttpGet("twitch-login")]
-        public IActionResult TwitchLogin()
+        public IActionResult TwitchLogin(string returnUrl)
         {
             var properties = new AuthenticationProperties
             {
@@ -63,6 +62,12 @@ namespace Project.WebAPI.Controllers.Twitch
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
+            if (result.Succeeded)
+            {
+                result.Properties.IsPersistent = true;
+                await HttpContext.SignInAsync(result.Principal);
+            }
+
             var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
             {
                 claim.Issuer,
@@ -71,7 +76,8 @@ namespace Project.WebAPI.Controllers.Twitch
                 claim.Value
             });
 
-            return Ok(claims);
+            //return Ok(claims);
+            return LocalRedirect("http://localhost:3000/twitch");
         }
 
         // PUT: api/TwitchAuthentication/5
