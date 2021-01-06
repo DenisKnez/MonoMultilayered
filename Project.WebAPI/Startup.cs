@@ -1,6 +1,8 @@
 ﻿using AutoWrapper;
 using FluentMigrator.Runner;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,6 +48,22 @@ namespace Project.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Authentication
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddGoogle(options =>
+            {
+                options.ClientId = Configuration.GetSection("GoogleAuthentication")["ClientId"];
+                options.ClientSecret = Configuration.GetSection("GoogleAuthentication")["ClientSecret"];
+            });
+
+
             //CORS
             services.AddCors(options =>
             {
@@ -110,6 +128,9 @@ namespace Project.WebAPI
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
